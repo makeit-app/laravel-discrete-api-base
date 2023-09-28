@@ -1,0 +1,14 @@
+{
+  "The provided password does not match your current password.": "The provided password does not match your current password.",
+  "The password field must contain at least one symbol.": "The password field must contain at least one symbol.",
+  "Roles": "Roles",
+  "Role": "Role",
+  "Name": "Name",
+  "Label": "Label",
+  "Comment": "Comment",
+  "Is Protected": "Is Protected",
+  "Super Administrator": "Super Administrator",
+  "Administrator": "Administrator",
+  "Support Stuff": "Support Stuff",
+  "Regular User": "Regular User"
+}

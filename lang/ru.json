@@ -1,0 +1,14 @@
+{
+  "The provided password does not match your current password.": "Предоставленный пароль не соотвествует текущему",
+  "The password field must contain at least one symbol.": "Пароль должен содержать как минимум один символ",
+  "Roles": "Роли",
+  "Role": "Роль",
+  "Name": "Название",
+  "Label": "Наименование",
+  "Comment": "Комментарий",
+  "Is Protected": "Защищено",
+  "Super Administrator": "Супер Администратор",
+  "Administrator": "Администратор",
+  "Support Stuff": "Поддержка пользователей",
+  "Regular User": "Пользователь"
+}
