@@ -1,0 +1,46 @@
+{
+  "name": "make-it-app/laravel-discrete-api-base",
+  "description": "Laravel 10 API for discrete Frontend. Supports Sanctum token authentication. Inscludes: register, login, logout, user with profile, reset password, email verification and avatar support.",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "MakeIT\\DiscreteApiBase\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "authors": [
+    {
+      "name": "Stanislav Kabin",
+      "email": "ioffline@make-it.app"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^8.1|^8.2|^8.3",
+    "laravel/framework": "^10.10",
+    "laravel/sanctum": "^3.2",
+    "nette/php-generator": "^4.0",
+    "symfony/var-exporter": "^6.3"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.0"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-main": "1.x-dev"
+    },
+    "laravel": {
+      "providers": [
+        "MakeIT\\DiscreteApiBase\\Providers\\DiscreteApiBaseServiceProvider"
+      ],
+      "aliases": {
+      }
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "prefer-stable": true
+}
