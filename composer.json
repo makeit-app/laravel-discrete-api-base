@@ -1,6 +1,17 @@
 {
   "name": "make-it-app/laravel-discrete-api-base",
-  "description": "Laravel 10 API for discrete Frontend. Supports Sanctum token authentication. Inscludes: register, login, logout, user with profile, reset password, email verification and avatar support.",
+  "description": "Laravel API for discrete Frontend. Supports Sanctum token authentication. Inscludes: register, authenticate, logout, reset password, email verification and profile/avatar support.",
+  "keywords": [
+    "laravel",
+    "discrete api",
+    "api",
+    "register",
+    "authenticate",
+    "reset password",
+    "email verification",
+    "profile",
+    "avatar"
+  ]
   "license": "MIT",
   "autoload": {
     "psr-4": {
