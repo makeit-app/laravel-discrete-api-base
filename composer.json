@@ -11,7 +11,7 @@
     "email verification",
     "profile",
     "avatar"
-  ]
+  ],
   "license": "MIT",
   "autoload": {
     "psr-4": {
