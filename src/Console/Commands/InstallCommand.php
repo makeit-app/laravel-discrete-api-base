@@ -1,5 +1,4 @@
 <?php
-
 /** @noinspection PhpUnusedAliasInspection */
 
 namespace MakeIT\DiscreteApiBase\Console\Commands;
@@ -41,7 +40,7 @@ class InstallCommand extends Command
      */
     public function handle(): void
     {
-        $this->_config = require realpath(__DIR__.'/../../config.php');
+        $this->_config = require realpath(__DIR__ . '/../../config.php');
         $this->newLine();
         $this->info('This is MakeIT\'s Discrete API (Base) Installer.');
         $this->newLine();
@@ -49,10 +48,19 @@ class InstallCommand extends Command
         $this->warn('We strongly recommend to deploy this package on to CLEAN Laravel 10!');
         $this->newLine();
         //
-        $quiz['modify_source_code'] = $this->confirm(question: "Are you planning to modify the Source Code of this package?\n", default: true);
-        $quiz['feature_email_verification'] = $this->confirm(question: "Do you planning to use email verification while registration?\n", default: true);
+        $quiz['modify_source_code'] = $this->confirm(
+            question: "Are you planning to modify the Source Code of this package?\n",
+            default: true
+        );
+        $quiz['feature_email_verification'] = $this->confirm(
+            question: "Do you planning to use email verification while registration?\n",
+            default: true
+        );
         $quiz['feature_avatars'] = $this->confirm(question: "Turn on the Avatars?\n", default: true);
-        $quiz['feature_user_deletion'] = $this->confirm(question: "Turn on the User self-delete (soft deletes)?\n", default: true);
+        $quiz['feature_user_deletion'] = $this->confirm(
+            question: "Turn on the User self-delete (soft deletes)?\n",
+            default: true
+        );
         //
         $this->comment('INTEGRATION INSTRUCTIONS:');
         $this->newLine();
@@ -74,12 +82,15 @@ class InstallCommand extends Command
                     $this->comment('         use HasProfile;');
                     $this->comment('         ....');
                     $this->newLine();
+                    $this->_config['route_namespace'] = 'app';
                     break;
                 case 'feature_email_verification':
                     if (is_bool($v)) {
                         $this->_config['email_verification'] = $v;
                         if ($v) {
-                            $this->info("You need to add MustVerifyEmail implementation to Your App\Models\User Model.");
+                            $this->info(
+                                "You need to add MustVerifyEmail implementation to Your App\Models\User Model."
+                            );
                             $this->newLine();
                             $this->comment("     use Illuminate\Contracts\Auth\MustVerifyEmail;");
                             $this->comment('     class User extends Authenticatable implements MustVerifyEmail');
@@ -113,11 +124,11 @@ class InstallCommand extends Command
                     break;
                 default:
                     $this->error('Quiz failed. Please, start over!');
-
                     return;
             }
         }
         $this->newLine();
+        $this->writeNewConfig();
         $this->info('Done.');
         $this->newLine();
     }
@@ -132,7 +143,6 @@ class InstallCommand extends Command
         foreach ($this->getClasses() as $type => $generated_classes) {
             $this->generate($type, $generated_classes);
         }
-        $this->writeNewConfig();
     }
 
     /**
@@ -141,59 +151,78 @@ class InstallCommand extends Command
     protected function getClasses(): array
     {
         $dirs = [
-            'actions' => realpath(__DIR__.'/../../Actions'),
-            'contracts' => realpath(__DIR__.'/../../Contracts'),
-            'controllers' => realpath(__DIR__.'/../../Http/Controllers'),
-            'middleware' => realpath(__DIR__.'/../../Http/Middleware'),
-            'models' => realpath(__DIR__.'/../../Models'),
-            'notifications' => realpath(__DIR__.'/../../Notifications'),
-            'observers' => realpath(__DIR__.'/../../Observers'),
-            'rules' => realpath(__DIR__.'/../../Rules'),
-            'traits' => realpath(__DIR__.'/../../Traits'),
+            'actions' => realpath(__DIR__ . '/../../Actions'),
+            'controllers' => realpath(__DIR__ . '/../../Http/Controllers'),
+            'middleware' => realpath(__DIR__ . '/../../Http/Middleware'),
+            'models' => realpath(__DIR__ . '/../../Models'),
+            'notifications' => realpath(__DIR__ . '/../../Notifications'),
+            'observers' => realpath(__DIR__ . '/../../Observers'),
+            'rules' => realpath(__DIR__ . '/../../Rules'),
+            'traits' => realpath(__DIR__ . '/../../Traits'),
         ];
         $namespace = compute_namespace();
         $namespaces = [
-            'actions' => $namespace.'Actions',
-            'contracts' => $namespace.'Contracts',
-            'controllers' => $namespace.'Http\Controllers',
-            'middleware' => $namespace.'Http\Middleware',
-            'models' => $namespace.'Models',
-            'notifications' => $namespace.'Notifications',
-            'observers' => $namespace.'Observers',
-            'rules' => $namespace.'Rules',
-            'traits' => $namespace.'Traits',
+            'actions' => $namespace . 'Actions',
+            'controllers' => $namespace . 'Http\Controllers',
+            'middleware' => $namespace . 'Http\Middleware',
+            'models' => $namespace . 'Models',
+            'notifications' => $namespace . 'Notifications',
+            'observers' => $namespace . 'Observers',
+            'rules' => $namespace . 'Rules',
+            'traits' => $namespace . 'Traits',
         ];
         $return = [];
         /**
          * Scan directory for .php files and returns array of class names with their namespaces
          *
-         * @param  string  $type
-         * @param  string  $dir
+         * @param string $type
+         * @param string $dir
          * @return array
          */
         $scanDir = function (string $type, string $dir) use ($namespaces) {
             $return = [];
             $h = opendir($dir);
             while (false !== ($entry = readdir($h))) {
-                if (is_file($dir.'/'.$entry)) {
-                    $path = $dir.'/'.$entry;
+                if (is_file($dir . '/' . $entry)) {
+                    $path = $dir . '/' . $entry;
                     $temp = [
                         'trait' => str_replace('.php', null, basename($path)),
                         'classname' => str_replace('.php', null, basename($path)),
                         'model' => null,
                         'model_namespace' => null,
-                        'use' => preg_replace('/^\\\/', null, $namespaces[$type].'\\'.str_replace('.php', null, basename($path))),
-                        'as' => 'DiscreteApiBase'.str_replace('.php', null, basename($path)),
-                        'ns' => preg_replace('/^\\\/', null, $this->_config['namespaces']['app'].str_replace(compute_namespace(), null, $namespaces[$type]).'\\DiscreteApiBase'),
+                        'use' => preg_replace(
+                            '/^\\\/',
+                            null,
+                            $namespaces[$type] . '\\' . str_replace('.php', null, basename($path))
+                        ),
+                        'as' => 'DiscreteApiBase' . str_replace('.php', null, basename($path)),
+                        'ns' => preg_replace(
+                            '/^\\\/',
+                            null,
+                            $this->_config['namespaces']['app'] . str_replace(
+                                compute_namespace(),
+                                null,
+                                $namespaces[$type]
+                            ) . '\\DiscreteApiBase'
+                        ),
                         'app_model' => null,
-                        'app_path' => app_path(str_replace([compute_namespace(), '\\'], [null, '/'], $namespaces[$type]).'/DiscreteApiBase'),
-                        'app_filename' => app_path(str_replace([compute_namespace(), '\\'], [null, '/'], $namespaces[$type]).'/DiscreteApiBase/'.basename($path)),
+                        'app_path' => app_path(
+                            str_replace([compute_namespace(), '\\'],
+                                [null, '/'],
+                                $namespaces[$type]) . '/DiscreteApiBase'
+                        ),
+                        'app_filename' => app_path(
+                            str_replace([compute_namespace(), '\\'],
+                                [null, '/'],
+                                $namespaces[$type]) . '/DiscreteApiBase/' . basename($path)
+                        ),
                         'package_path' => $path,
                     ];
                     switch ($type) {
                         case 'traits':
                             break;
                         case 'observers':
+                            unset($temp['trait']);
                             $temp['model_namespace'] = str_replace(
                                 '\\Observers\\',
                                 '\\Models\\',
@@ -205,20 +234,21 @@ class InstallCommand extends Command
                                 str_replace(
                                     '\\Observers\\',
                                     '\\Models\\',
-                                    ($namespaces[$type].'\\'.str_replace('Observer.php', null, basename($path)))
+                                    ($namespaces[$type] . '\\' . str_replace('Observer.php', null, basename($path)))
                                 )
                             );
                             $temp['app_model'] = str_replace(
-                                '\\Observers\\',
-                                '\\Models\\',
-                                'App\\Models\\DiscreteApiBase\\'
-                            ).str_replace(
-                                'Observer.php',
-                                null,
-                                basename($path)
-                            );
+                                    '\\Observers\\',
+                                    '\\Models\\',
+                                    'App\\Models\\DiscreteApiBase\\'
+                                ) . str_replace(
+                                    'Observer.php',
+                                    null,
+                                    basename($path)
+                                );
                             break;
                         case 'policies':
+                            unset($temp['trait']);
                             $temp['model_namespace'] = str_replace(
                                 '\\Policies\\',
                                 '\\Models\\',
@@ -227,30 +257,35 @@ class InstallCommand extends Command
                             $temp['model'] = preg_replace(
                                 '/^\\\/',
                                 null,
-                                str_replace('\\Observers\\', '\\Models\\', ($namespaces[$type].'\\'.str_replace('Observer.php', null, basename($path))))
+                                str_replace(
+                                    '\\Observers\\',
+                                    '\\Models\\',
+                                    ($namespaces[$type] . '\\' . str_replace('Observer.php', null, basename($path)))
+                                )
                             );
                             $temp['app_model'] = str_replace(
-                                '\\Observers\\',
-                                '\\Models\\',
-                                'App\\Models\\DiscreteApiBase\\'
-                            ).str_replace(
-                                'Observer.php',
-                                null,
-                                basename($path)
-                            );
+                                    '\\Observers\\',
+                                    '\\Models\\',
+                                    'App\\Models\\DiscreteApiBase\\'
+                                ) . str_replace(
+                                    'Observer.php',
+                                    null,
+                                    basename($path)
+                                );
+                            break;
+                        default:
+                            unset($temp['trait']);
                             break;
                     }
                     $return[] = $temp;
                 }
             }
             closedir($h);
-
             return $return;
         };
         foreach ($dirs as $type => $dir) {
             $return[$type] = $scanDir($type, $dir);
         }
-
         return $return;
     }
 
@@ -259,10 +294,10 @@ class InstallCommand extends Command
      */
     protected function generate(string $type, array $generated_classes): void
     {
-        if (! empty($generated_classes['observers'])) {
+        if (!empty($generated_classes['observers'])) {
             $this->_config['observersToRegister'] = [];
         }
-        if (! empty($generated_classes['policies'])) {
+        if (!empty($generated_classes['policies'])) {
             $this->_config['policiesToRegister'] = [];
         }
         $printer = new PsrPrinter;
@@ -286,14 +321,14 @@ class InstallCommand extends Command
         $trait = $printer->setTypeResolving(false)->printNamespace($ns);
         $trait = str_replace(
             [
-                config('discreteapibase.namespaces.package').'Models\\',
+                config('discreteapibase.namespaces.package') . 'Models\\',
             ],
             [
-                config('discreteapibase.namespaces.app').'Models\\DiscreteApiBase\\',
+                config('discreteapibase.namespaces.app') . 'Models\\DiscreteApiBase\\',
             ],
             $trait
         );
-        if (! is_dir($class['app_path']) && ! is_file($class['app_path']) && ! is_link($class['app_path'])) {
+        if (!is_dir($class['app_path']) && !is_file($class['app_path']) && !is_link($class['app_path'])) {
             try {
                 mkdir($class['app_path'], 0755, true);
             } catch (Exception $e) {
@@ -301,21 +336,20 @@ class InstallCommand extends Command
                 $this->error('Is not writeable!');
                 $this->error('Please check path!');
                 $this->error($e->getMessage());
-
                 return;
             }
         }
         $f = fopen($class['app_filename'], 'c');
-        fwrite($f, "<?php\n\n".$trait);
+        fwrite($f, "<?php\n\n" . $trait);
         fclose($f);
         switch ($type) {
             case 'observers':
                 $fqcn = $class['app_model'];
-                $this->_config['observersToRegister'][$fqcn] = $class['ns'].'\\'.$class['classname'];
+                $this->_config['observersToRegister'][$fqcn] = $class['ns'] . '\\' . $class['classname'];
                 break;
             case 'policies':
                 $fqcn = $class['app_model'];
-                $this->_config['policiesToRegister'][$fqcn] = $class['ns'].'\\'.$class['classname'];
+                $this->_config['policiesToRegister'][$fqcn] = $class['ns'] . '\\' . $class['classname'];
                 break;
         }
     }
@@ -326,13 +360,48 @@ class InstallCommand extends Command
     protected function _generate(array $class, PsrPrinter $printer, string $type = null): void
     {
         $ns = new PhpNamespace($class['ns']);
-        $target = new ClassType($class['classname']);
-        $target->setFinal()->setExtends($class['as'])->addComment('{@inheritDoc}');
+        $target = ClassType::fromCode(file_get_contents($class['package_path']));
+        $target->setFinal()->setExtends($class['as']);
+        if ($type == 'models') {
+            $tmp_traits = $target->getTraits();
+            if (!empty($tmp_traits)) {
+                $traits = [];
+                $target->setTraits([]);
+                foreach ($tmp_traits as $tr) {
+                    $_bn = class_basename($tr->getName());
+                    $_fn = str_replace('\\' . $_bn, null, $tr->getName());
+                    $_fn = (preg_match("/^\\\/", $tr->getName()) ? null : '\\') . $_fn;
+                    $traits[] = [
+                        'name' => $_bn,
+                        'path' => str_replace(
+                                config('discreteapibase.namespaces.package'),
+                                config('discreteapibase.namespaces.app'),
+                                ($_fn)
+                            ) . '\\DiscreteApiBase\\'
+                    ];
+                }
+                unset($tmp_traits, $tr);
+                if (!empty($traits)) {
+                    foreach ($traits as $tr) {
+                        $target->addTrait($tr['name']);
+                    }
+                    unset($tr);
+                }
+            }
+        }
         $ns->add($target);
-        if (! empty($class['use']) && ! empty($class['as'])) {
+        if (!empty($traits)) {
+            foreach ($traits as $tr) {
+                $ns->addUse($tr['path'] . $tr['name']);
+            }
+        }
+        if (!empty($class['use']) && !empty($class['as'])) {
             $ns->addUse($class['use'], $class['as']);
         }
-        if (! is_dir($class['app_path']) && ! is_file($class['app_path']) && ! is_link($class['app_path'])) {
+        if ($type == 'models') {
+            //dd($printer->setTypeResolving(false)->printNamespace($ns));
+        }
+        if (!is_dir($class['app_path']) && !is_file($class['app_path']) && !is_link($class['app_path'])) {
             try {
                 mkdir($class['app_path'], 0755, true);
             } catch (Exception $e) {
@@ -340,24 +409,20 @@ class InstallCommand extends Command
                 $this->error('Is not writeable!');
                 $this->error('Please check path!');
                 $this->error($e->getMessage());
-
                 return;
             }
         }
         $f = fopen($class['app_filename'], 'c');
-        fwrite($f, "<?php\n\n".$printer->setTypeResolving(false)->printNamespace($ns));
+        fwrite($f, "<?php\n\n" . $printer->setTypeResolving(false)->printNamespace($ns));
         fclose($f);
         switch ($type) {
             case 'observers':
                 $fqcn = $class['app_model'];
-                $this->_config['observersToRegister'][$fqcn] = $class['ns'].'\\'.$class['classname'];
+                $this->_config['observersToRegister'][$fqcn] = $class['ns'] . '\\' . $class['classname'];
                 break;
             case 'policies':
                 $fqcn = $class['app_model'];
-                $this->_config['policiesToRegister'][$fqcn] = $class['ns'].'\\'.$class['classname'];
-                break;
-            case 'traits':
-                dd($class);
+                $this->_config['policiesToRegister'][$fqcn] = $class['ns'] . '\\' . $class['classname'];
                 break;
         }
     }
@@ -370,7 +435,7 @@ class InstallCommand extends Command
         $content = VarExporter::export($this->_config);
         file_put_contents(
             config_path('discreteapibase.php'),
-            "<?php\n\nreturn ".$content.";\n"
+            "<?php\n\nreturn " . $content . ";\n"
         );
     }
 }

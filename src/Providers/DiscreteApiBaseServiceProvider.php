@@ -1,26 +1,14 @@
 <?php
-
 /** @noinspection 1PhpFullyQualifiedNameUsageInspection, 1PhpUndefinedClassInspection, 1PhpUndefinedNamespaceInspection, 1PhpUndefinedConstantInspection */
 
 namespace MakeIT\DiscreteApiBase\Providers;
 
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 use Laravel\Sanctum\Sanctum;
-use MakeIT\DiscreteApiBase\Actions\AuthenticateAction;
-use MakeIT\DiscreteApiBase\Actions\LogoutAction;
-use MakeIT\DiscreteApiBase\Actions\PasswordForgotAction;
-use MakeIT\DiscreteApiBase\Actions\PasswordResetAction;
-use MakeIT\DiscreteApiBase\Actions\ProfileUpdateAction;
-use MakeIT\DiscreteApiBase\Actions\RegisterAction;
-use MakeIT\DiscreteApiBase\Actions\UserDeleteAction;
 use MakeIT\DiscreteApiBase\Console\Commands\InstallCommand;
 use MakeIT\DiscreteApiBase\Contracts\AuthenticateContract;
 use MakeIT\DiscreteApiBase\Contracts\LogoutContract;
@@ -29,7 +17,6 @@ use MakeIT\DiscreteApiBase\Contracts\PasswordResetContract;
 use MakeIT\DiscreteApiBase\Contracts\ProfileUpdareContract;
 use MakeIT\DiscreteApiBase\Contracts\RegisterContract;
 use MakeIT\DiscreteApiBase\Contracts\UserDeleteContract;
-use MakeIT\DiscreteApiBase\Models\PersonalAccessToken;
 
 class DiscreteApiBaseServiceProvider extends ServiceProvider
 {
@@ -38,7 +25,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config.php', 'discreteapibase');
+        $this->mergeConfigFrom(__DIR__ . '/../config.php', 'discreteapibase');
     }
 
     /**
@@ -48,11 +35,12 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadTranslationsFrom(__DIR__.'/../../lang', 'discreteapi');
-        $this->loadJsonTranslationsFrom(__DIR__.'/../../lang');
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'discreteapi');
+        $this->loadJsonTranslationsFrom(__DIR__ . '/../../lang');
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->configurePersonalAccessToken();
         //
+        $this->configurePersonalAccessToken();
         $this->configurePublishing();
         $this->configureCommands();
         $this->configureRoutes();
@@ -66,7 +54,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configurePersonalAccessToken(): void
     {
-        Sanctum::usePersonalAccessTokenModel(compute_namespace().'Models\\PersonalAccessToken');
+        Sanctum::usePersonalAccessTokenModel(compute_namespace() . 'Models\\DiscreteApiBase\\PersonalAccessToken');
     }
 
     /**
@@ -74,15 +62,9 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configurePublishing(): void
     {
-        if (! $this->app->runningInConsole()) {
+        if (!$this->app->runningInConsole()) {
             return;
         }
-        $this->publishes([
-            __DIR__.'/../config.php' => config_path('discreteapibase.php'),
-        ], 'config');
-        $this->publishes([
-            __DIR__.'/../../database/migrations' => database_path('migrations'),
-        ], 'migrations');
     }
 
     /**
@@ -109,23 +91,27 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $domain = $parsed['host'];
         unset($parsed);
         $router = $this->app->make(Router::class);
-        $router->aliasMiddleware('preload_user_data', (config('discreteapibase.route_namespace') === 'app' ? '\\App\\Http\\Middleware\\DiscreteApiBase\\PreloadUserData' : '\\MakeIT\\DiscreteApiBase\\Http\\Middleware\\PreloadUserData'));
-        Route::domain($domain)
-            ->middleware(['api', 'preload_user_data'])
-            ->namespace(compute_route_namespace())
-            ->prefix('api')
-            ->group(function () {
-                $this->loadRoutesFrom(__DIR__.'/../routes.php');
-            });
-        RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(config('discreteapibase.username'))).'|'.$request->ip());
-
-            return Limit::perMinute(1)->by($throttleKey);
+        $router->aliasMiddleware(
+            'preload_user_data',
+            (config('discreteapibase.route_namespace') === 'app'
+                ? '\\App\\Http\\Middleware\\DiscreteApiBase\\PreloadUserData'
+                : '\\MakeIT\\DiscreteApiBase\\Http\\Middleware\\PreloadUserData')
+        );
+        Route::domain($domain)->middleware(['api', 'preload_user_data'])->namespace(compute_route_namespace())->prefix(
+            'api'
+        )->group(function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes.php');
         });
         /*
-        RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(1)->by($request->session()->get('login.id'));
-        });
+                RateLimiter::for('login', function (Request $request) {
+                    $throttleKey = Str::transliterate(
+                        Str::lower($request->input(config('discreteapibase.username'))) . '|' . $request->ip()
+                    );
+                    return Limit::perMinute(1)->by($throttleKey);
+                });
+                RateLimiter::for('two-factor', function (Request $request) {
+                    return Limit::perMinute(1)->by($request->session()->get('login.id'));
+                });
         */
     }
 
@@ -160,12 +146,13 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configureResponseBindings(): void
     {
-        $this->app->singleton(RegisterContract::class, RegisterAction::class);
-        $this->app->singleton(AuthenticateContract::class, AuthenticateAction::class);
-        $this->app->singleton(LogoutContract::class, LogoutAction::class);
-        $this->app->singleton(PasswordForgotContract::class, PasswordForgotAction::class);
-        $this->app->singleton(PasswordResetContract::class, PasswordResetAction::class);
-        $this->app->singleton(ProfileUpdareContract::class, ProfileUpdateAction::class);
-        $this->app->singleton(UserDeleteContract::class, UserDeleteAction::class);
+        $actions_namespace = compute_namespace() . 'Actions\\DiscreteApiBase\\';
+        $this->app->singleton(RegisterContract::class, $actions_namespace . 'RegisterAction');
+        $this->app->singleton(AuthenticateContract::class, $actions_namespace . 'AuthenticateAction');
+        $this->app->singleton(LogoutContract::class, $actions_namespace . 'LogoutAction');
+        $this->app->singleton(PasswordForgotContract::class, $actions_namespace . 'PasswordForgotAction');
+        $this->app->singleton(PasswordResetContract::class, $actions_namespace . 'PasswordResetAction');
+        $this->app->singleton(ProfileUpdareContract::class, $actions_namespace . 'ProfileUpdateAction');
+        $this->app->singleton(UserDeleteContract::class, $actions_namespace . 'UserDeleteAction');
     }
 }
