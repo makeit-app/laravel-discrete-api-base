@@ -5,9 +5,6 @@ namespace MakeIT\DiscreteApiBase\Http\Controllers;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\JsonResponse;
 
-/**
- * {@inheritDoc}
- */
 class VerificationNoticeController extends DiscreteApiController
 {
     public function __invoke(EmailVerificationRequest $request): JsonResponse

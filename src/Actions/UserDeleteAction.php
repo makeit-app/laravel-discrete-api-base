@@ -16,7 +16,7 @@ class UserDeleteAction extends UserDeleteContract
     {
         if (! app()->runningInConsole()) {
             $Validator = Validator::make($input, [
-                'current_password' => ['required', 'string', new MatchCurrentPasswordRule],
+                'current_password' => ['required', 'string', new MatchCurrentPasswordRule()],
             ]);
             if ($Validator->fails()) {
                 return response()->json(['errors' => $Validator->errors()->toArray()], 400);

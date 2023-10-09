@@ -2,17 +2,15 @@
 
 namespace MakeIT\DiscreteApiBase\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use MakeIT\DiscreteApiBase\Contracts\RegisterContract;
 
-/**
- * {@inheritDoc}
- */
 class RegisterController extends DiscreteApiController
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function __invoke(Request $request): JsonResponse
     {

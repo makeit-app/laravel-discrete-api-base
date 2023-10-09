@@ -21,7 +21,6 @@ class PasswordForgotAction extends \MakeIT\DiscreteApiBase\Contracts\PasswordFor
             //
             $status = Password::sendResetLink($input, function ($user, $token) {
                 $user->notify(new ResetPasswordNotification($token));
-
                 return Password::RESET_LINK_SENT;
             });
 

@@ -25,21 +25,22 @@ Route::middleware('auth:sanctum')->group(function () {
     if (config('discreteapibase.features.email_verification', false) === true) {
         // email verification
         Route::prefix('email')->group(function () {
-            // verify email
-            Route::middleware(['signed'])->get('/verify/{id}/{hash}', 'VerificationController')->name('verification.verify');
             // request verification link
             Route::middleware(['throttle:6,1'])->post('/verification-notification', 'VerificationResendController')->name('verification.send');
+            // verify email
+            Route::middleware(['signed'])->get('/verify/{id}/{hash}', 'VerificationController')->name('verification.verify');
         });
     }
     // user
     Route::middleware('auth:sanctum')->prefix('/user')->group(function () {
         // get user
         Route::get('/', 'UserController');
-        //
+        // delete user
         if (config('discreteapibase.features.user_delete', false) === true) {
-            // delete user
             Route::delete('/', 'UserDeleteController');
         }
+        // force-delete user (initiator must be super admin!)
+        Route::delete('/force/{user_id}', 'UserForceDeleteController');
         // profile
         Route::prefix('/profile')->group(function () {
             // update

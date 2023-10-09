@@ -1,5 +1,6 @@
 <?php
-/** @noinspection PhpUnusedAliasInspection */
+
+/** @noinspection PhpPossiblePolymorphicInvocationInspection, PhpParamsInspection, PhpUndefinedMethodInspection, PhpUnusedAliasInspection */
 
 namespace MakeIT\DiscreteApiBase\Console\Commands;
 
@@ -48,6 +49,17 @@ class InstallCommand extends Command
         $this->warn('We strongly recommend to deploy this package on to CLEAN Laravel 10!');
         $this->newLine();
         //
+        $this->info(base_path('config/discreteapibase.php'));
+        if (is_file(base_path('config/discreteapibase.php'))) {
+            if (!$this->confirm(
+                question: "Before begin, we need to force delete existing config file to avoid mistakes in the future confuration?\n"
+            )) {
+                $this->error('Cant continue with existing config file:');
+                $this->error('    config/discreteapibase.php          ');
+                $this->newLine();
+                return;
+            }
+        }
         $quiz['modify_source_code'] = $this->confirm(
             question: "Are you planning to modify the Source Code of this package?\n",
             default: true
@@ -56,7 +68,6 @@ class InstallCommand extends Command
             question: "Do you planning to use email verification while registration?\n",
             default: true
         );
-        $quiz['feature_avatars'] = $this->confirm(question: "Turn on the Avatars?\n", default: true);
         $quiz['feature_user_deletion'] = $this->confirm(
             question: "Turn on the User self-delete (soft deletes)?\n",
             default: true
@@ -98,19 +109,6 @@ class InstallCommand extends Command
                         }
                     }
                     break;
-                case 'feature_avatars':
-                    if (is_bool($v)) {
-                        $this->_config['avatars'] = $v;
-                        if ($v) {
-                            $this->info('INFORMATION: Avatar routes are activated.');
-                            $this->comment('INFORMATION: Profile->Avatar Relation can be used.');
-                        } else {
-                            $this->info('INFORMATION: Avatar routes are DEactivated.');
-                            $this->comment('INFORMATION: Profile->Avatar Relation is are useless.');
-                        }
-                        $this->newLine();
-                    }
-                    break;
                 case 'feature_user_deletion':
                     if (is_bool($v)) {
                         $this->_config['user_delete'] = $v;
@@ -135,8 +133,6 @@ class InstallCommand extends Command
 
     /**
      * Wrapper for generators
-     *
-     * @throws ExceptionInterface
      */
     protected function generateDescendantss(): void
     {
@@ -207,14 +203,18 @@ class InstallCommand extends Command
                         ),
                         'app_model' => null,
                         'app_path' => app_path(
-                            str_replace([compute_namespace(), '\\'],
+                            str_replace(
+                                [compute_namespace(), '\\'],
                                 [null, '/'],
-                                $namespaces[$type]) . '/DiscreteApiBase'
+                                $namespaces[$type]
+                            ) . '/DiscreteApiBase'
                         ),
                         'app_filename' => app_path(
-                            str_replace([compute_namespace(), '\\'],
+                            str_replace(
+                                [compute_namespace(), '\\'],
                                 [null, '/'],
-                                $namespaces[$type]) . '/DiscreteApiBase/' . basename($path)
+                                $namespaces[$type]
+                            ) . '/DiscreteApiBase/' . basename($path)
                         ),
                         'package_path' => $path,
                     ];
@@ -238,14 +238,14 @@ class InstallCommand extends Command
                                 )
                             );
                             $temp['app_model'] = str_replace(
-                                    '\\Observers\\',
-                                    '\\Models\\',
-                                    'App\\Models\\DiscreteApiBase\\'
-                                ) . str_replace(
-                                    'Observer.php',
-                                    null,
-                                    basename($path)
-                                );
+                                '\\Observers\\',
+                                '\\Models\\',
+                                'App\\Models\\DiscreteApiBase\\'
+                            ) . str_replace(
+                                'Observer.php',
+                                null,
+                                basename($path)
+                            );
                             break;
                         case 'policies':
                             unset($temp['trait']);
@@ -264,14 +264,14 @@ class InstallCommand extends Command
                                 )
                             );
                             $temp['app_model'] = str_replace(
-                                    '\\Observers\\',
-                                    '\\Models\\',
-                                    'App\\Models\\DiscreteApiBase\\'
-                                ) . str_replace(
-                                    'Observer.php',
-                                    null,
-                                    basename($path)
-                                );
+                                '\\Observers\\',
+                                '\\Models\\',
+                                'App\\Models\\DiscreteApiBase\\'
+                            ) . str_replace(
+                                'Observer.php',
+                                null,
+                                basename($path)
+                            );
                             break;
                         default:
                             unset($temp['trait']);
@@ -300,7 +300,7 @@ class InstallCommand extends Command
         if (!empty($generated_classes['policies'])) {
             $this->_config['policiesToRegister'] = [];
         }
-        $printer = new PsrPrinter;
+        $printer = new PsrPrinter();
         foreach ($generated_classes as $class) {
             if ($type == 'traits') {
                 $this->_generateTrait($class, $printer, $type);
@@ -339,7 +339,7 @@ class InstallCommand extends Command
                 return;
             }
         }
-        $f = fopen($class['app_filename'], 'c');
+        $f = fopen($class['app_filename'], 'w');
         fwrite($f, "<?php\n\n" . $trait);
         fclose($f);
         switch ($type) {
@@ -374,10 +374,10 @@ class InstallCommand extends Command
                     $traits[] = [
                         'name' => $_bn,
                         'path' => str_replace(
-                                config('discreteapibase.namespaces.package'),
-                                config('discreteapibase.namespaces.app'),
-                                ($_fn)
-                            ) . '\\DiscreteApiBase\\'
+                            config('discreteapibase.namespaces.package'),
+                            config('discreteapibase.namespaces.app'),
+                            ($_fn)
+                        ) . '\\DiscreteApiBase\\'
                     ];
                 }
                 unset($tmp_traits, $tr);
@@ -398,9 +398,6 @@ class InstallCommand extends Command
         if (!empty($class['use']) && !empty($class['as'])) {
             $ns->addUse($class['use'], $class['as']);
         }
-        if ($type == 'models') {
-            //dd($printer->setTypeResolving(false)->printNamespace($ns));
-        }
         if (!is_dir($class['app_path']) && !is_file($class['app_path']) && !is_link($class['app_path'])) {
             try {
                 mkdir($class['app_path'], 0755, true);
@@ -412,7 +409,7 @@ class InstallCommand extends Command
                 return;
             }
         }
-        $f = fopen($class['app_filename'], 'c');
+        $f = fopen($class['app_filename'], 'w');
         fwrite($f, "<?php\n\n" . $printer->setTypeResolving(false)->printNamespace($ns));
         fclose($f);
         switch ($type) {

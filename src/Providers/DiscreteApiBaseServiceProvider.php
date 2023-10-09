@@ -1,4 +1,5 @@
 <?php
+
 /** @noinspection 1PhpFullyQualifiedNameUsageInspection, 1PhpUndefinedClassInspection, 1PhpUndefinedNamespaceInspection, 1PhpUndefinedConstantInspection */
 
 namespace MakeIT\DiscreteApiBase\Providers;
@@ -14,9 +15,11 @@ use MakeIT\DiscreteApiBase\Contracts\AuthenticateContract;
 use MakeIT\DiscreteApiBase\Contracts\LogoutContract;
 use MakeIT\DiscreteApiBase\Contracts\PasswordForgotContract;
 use MakeIT\DiscreteApiBase\Contracts\PasswordResetContract;
+use MakeIT\DiscreteApiBase\Contracts\ProfileAvatarUpdateContract;
 use MakeIT\DiscreteApiBase\Contracts\ProfileUpdareContract;
 use MakeIT\DiscreteApiBase\Contracts\RegisterContract;
 use MakeIT\DiscreteApiBase\Contracts\UserDeleteContract;
+use MakeIT\DiscreteApiBase\Contracts\UserForceDeleteContract;
 
 class DiscreteApiBaseServiceProvider extends ServiceProvider
 {
@@ -154,5 +157,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $this->app->singleton(PasswordResetContract::class, $actions_namespace . 'PasswordResetAction');
         $this->app->singleton(ProfileUpdareContract::class, $actions_namespace . 'ProfileUpdateAction');
         $this->app->singleton(UserDeleteContract::class, $actions_namespace . 'UserDeleteAction');
+        $this->app->singleton(UserForceDeleteContract::class, $actions_namespace . 'UserForceDeleteAction');
+        $this->app->singleton(ProfileAvatarUpdateContract::class, $actions_namespace . 'ProfileAvatarUpdateAction');
     }
 }

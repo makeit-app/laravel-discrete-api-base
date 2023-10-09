@@ -2,16 +2,22 @@
 
 namespace MakeIT\DiscreteApiBase\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-/**
- * {@inheritDoc}
- */
 class ProfileAvatarController extends DiscreteApiController
 {
-    public function __invoke(Request $request): JsonResponse
+    /**
+     * @param Request $request
+     * @return Response|BinaryFileResponse
+     */
+    public function __invoke(Request $request)
     {
-        return response()->json($request->user());
+        if (is_null($request->user()->profile->avatar_path)) {
+            return response()->noContent(204);
+        }
+
+        return response()->file(($request->user()->profile->avatarDisk() == 'public' ? 'storage/' : null).$request->user()->profile->avatar_path);
     }
 }
