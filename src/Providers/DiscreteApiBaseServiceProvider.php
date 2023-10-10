@@ -38,7 +38,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'discreteapi');
+        $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'discreteapibase');
         $this->loadJsonTranslationsFrom(__DIR__ . '/../../lang');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         //
