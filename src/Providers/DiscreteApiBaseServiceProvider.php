@@ -41,7 +41,6 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'discreteapi');
         $this->loadJsonTranslationsFrom(__DIR__ . '/../../lang');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->configurePersonalAccessToken();
         //
         $this->configurePersonalAccessToken();
         $this->configurePublishing();
