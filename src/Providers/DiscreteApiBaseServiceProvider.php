@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
-use MakeIT\DiscreteApiBase\Console\Commands\InstallCommand;
+use MakeIT\DiscreteApiBase\Console\Commands\InstallDiscreteApiBaseCommand;
 use MakeIT\DiscreteApiBase\Contracts\AuthenticateContract;
 use MakeIT\DiscreteApiBase\Contracts\LogoutContract;
 use MakeIT\DiscreteApiBase\Contracts\PasswordForgotContract;
@@ -76,7 +76,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
     {
         if (app()->runningInConsole()) {
             $this->commands([
-                InstallCommand::class,
+                InstallDiscreteApiBaseCommand::class,
             ]);
         }
     }
