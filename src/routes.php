@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
         });
     }
     // user
-    Route::middleware('auth:sanctum')->prefix('/user')->group(function () {
+    Route::prefix('/user')->group(function () {
         // get user
         Route::get('/', 'UserController');
         // delete user
