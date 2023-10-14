@@ -16,6 +16,13 @@ This package must be installed and configured manually AS ROOT PACKAGE before th
 
 ## Setup
 
-`php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="config"` - if you plan modify config
-`php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="migrations"` - if you plan to modify migrations
-`php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="lang"` - if you plan modyfy localization files
+- `php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="migrations"` - if you plan to modify migrations<br>
+<br>
+- `php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="lang"` - if you plan modyfy localization files<br>
+<br>
+- `php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="user-model" --force` - full version of `App\Models\User.php`,
+...meaning the installed `make-it-app/laravel-user-roles` package and this installable package.<br>
+<br>
+`php artisan makeit:discreteapi:base:install` - installer for modificable descendant classes of the package. Follow installer instructions!<br>
+
+Then see `app/**/DiscreteApi/Base/*` filesystem structure.
