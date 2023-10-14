@@ -1,3 +1,5 @@
+# HELLO
+
 # Laravel Discrete API Base
 
 Laravel API for discrete Frontend. Base Version (needed for all futher verstions).<br>
