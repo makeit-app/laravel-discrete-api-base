@@ -12,7 +12,7 @@ This package must be installed and configured manually AS ROOT PACKAGE before th
 
 ## Installation
 
-`composer require "make-it-app/laravel-discrete-api-base":"*"`
+`composer require "make-it-app/laravel-discrete-api-base"`
 
 ## Setup
 
