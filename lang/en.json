@@ -1,3 +1,4 @@
 {
-
+  "The provided password does not match your current password.": "The provided password does not match your current password.",
+  "The password field must contain at least one symbol.": "The password field must contain at least one symbol."
 }

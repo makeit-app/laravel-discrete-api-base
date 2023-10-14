@@ -41,22 +41,5 @@ Route::middleware('auth:sanctum')->group(function () {
         }
         // force-delete user (initiator must be super admin!)
         Route::delete('/force/{user_id}', 'UserForceDeleteController');
-        // profile
-        Route::prefix('/profile')->group(function () {
-            // update
-            Route::put('/', 'ProfileUpdateController');
-            //
-            if (config('discreteapibase.features.avatars', false) === true) {
-                // avatar
-                Route::prefix('/avatar')->group(function () {
-                    // get as image
-                    Route::get('/', 'ProfileAvatarController');
-                    // upload new image
-                    Route::post('/', 'ProfileAvatarUpdateController');
-                    // remove image
-                    Route::delete('/', 'ProfileAvatarDeleteController');
-                });
-            }
-        });
     });
 });

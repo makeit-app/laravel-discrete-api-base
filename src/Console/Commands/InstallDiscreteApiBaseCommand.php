@@ -43,11 +43,10 @@ class InstallDiscreteApiBaseCommand extends Command
         $this->newLine();
         $this->info('This is MakeIT\'s Discrete API (Base) Installer.');
         $this->newLine();
-        $this->error('ATTENTION please !');
-        $this->warn('We strongly recommend to deploy this package on to CLEAN Laravel 10!');
+        $this->error(' ATTENTION please !                                                   ');
+        $this->error(' We strongly recommend to deploy this package on to CLEAN Laravel 10! ');
         $this->newLine();
         //
-        $this->info(base_path('config/discreteapibase.php'));
         if (is_file(base_path('config/discreteapibase.php'))) {
             if (!$this->confirm(
                 question: "Before begin, we need to force delete existing config file to avoid mistakes in the future confuration?\n"
@@ -76,21 +75,12 @@ class InstallDiscreteApiBaseCommand extends Command
         foreach ($quiz as $k => $v) {
             switch ($k) {
                 case 'modify_source_code':
-                    $this->info('You need to add HasProfile Trait to the User Model.');
                     $this->newLine();
                     if (is_bool($v)) {
                         if ($v) {
-                            $this->comment("     use App\Traits\DiscreteApi\Base\HasProfile;");
                             $this->generateDescendantss();
-                        } else {
-                            $this->comment("     use MakeIT\DiscreteApi\Base\Traits\HasProfile;");
                         }
                     }
-                    $this->comment('     class User....');
-                    $this->comment('     {');
-                    $this->comment('         use HasProfile;');
-                    $this->comment('         ....');
-                    $this->newLine();
                     $this->_config['route_namespace'] = 'app';
                     break;
                 case 'feature_email_verification':
@@ -118,9 +108,6 @@ class InstallDiscreteApiBaseCommand extends Command
                         $this->newLine();
                     }
                     break;
-                default:
-                    $this->error('Quiz failed. Please, start over!');
-                    return;
             }
         }
         $this->newLine();
@@ -174,6 +161,9 @@ class InstallDiscreteApiBaseCommand extends Command
          * @return array
          */
         $scanDir = function (string $type, string $dir) use ($namespaces) {
+            if ( !is_dir($dir) ) {
+                return [];
+            }
             $return = [];
             $h = opendir($dir);
             while (false !== ($entry = readdir($h))) {
@@ -212,7 +202,7 @@ class InstallDiscreteApiBaseCommand extends Command
                                 [compute_namespace(), '\\'],
                                 [null, '/'],
                                 $namespaces[$type]
-                            ) . '/DiscreteApiBase/' . basename($path)
+                            ) . '/DiscreteApi/Base/' . basename($path)
                         ),
                         'package_path' => $path,
                     ];
@@ -343,7 +333,6 @@ class InstallDiscreteApiBaseCommand extends Command
         fclose($f);
         switch ($type) {
             case 'observers':
-                $fqcn = $class['app_model'];
                 $this->_config['observersToRegister'][$fqcn] = $class['ns'] . '\\' . $class['classname'];
                 break;
             case 'policies':
@@ -419,6 +408,13 @@ class InstallDiscreteApiBaseCommand extends Command
         switch ($type) {
             case 'observers':
                 $fqcn = $class['app_model'];
+                if ( preg_match("/^App\\\\Models\\\\DiscreteApi\\\\Base\\\\User$/", $fqcn) ) {
+                    // re-point to App\Models\User model
+                    $fqcn = "\\App\\Models\\User";
+                    // remove App\Models\DiscreteApi\Base\User model (if created)
+                    // @unlink($class['app_filename']);
+                }
+//dd($class['ns'] . '\\' . $class['classname'],$class['app_filename']);
                 $this->_config['observersToRegister'][$fqcn] = $class['ns'] . '\\' . $class['classname'];
                 break;
             case 'policies':

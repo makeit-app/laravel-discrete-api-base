@@ -17,9 +17,9 @@ return [
      * What to use as route namespace
      * (where to look for controllers)
      * "package" -> look for package controllers to
-     *      \MakeIT\DiscreteApiBase\Http\Controllers
+     *      \MakeIT\DiscreteApi\Base\Http\Controllers
      * "app" -> look for application controllers placement
-     *      \App\Http\Controllers\DiscreteApiBase
+     *      \App\Http\Controllers\DiscreteApi\Base
      */
     'route_namespace' => 'package', // or "app"
     /**

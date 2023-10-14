@@ -15,8 +15,6 @@ use MakeIT\DiscreteApi\Base\Contracts\AuthenticateContract;
 use MakeIT\DiscreteApi\Base\Contracts\LogoutContract;
 use MakeIT\DiscreteApi\Base\Contracts\PasswordForgotContract;
 use MakeIT\DiscreteApi\Base\Contracts\PasswordResetContract;
-use MakeIT\DiscreteApi\Base\Contracts\ProfileAvatarUpdateContract;
-use MakeIT\DiscreteApi\Base\Contracts\ProfileUpdareContract;
 use MakeIT\DiscreteApi\Base\Contracts\RegisterContract;
 use MakeIT\DiscreteApi\Base\Contracts\UserDeleteContract;
 use MakeIT\DiscreteApi\Base\Contracts\UserForceDeleteContract;
@@ -64,8 +62,10 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configurePublishing(): void
     {
-        if (!$this->app->runningInConsole()) {
-            return;
+        if ($this->app->runningInConsole()) {
+            $this->publishes([__DIR__ . '/../../database/migrations' => base_path('database/migrations')], 'migrations');
+            $this->publishes([__DIR__ . '/../../resources/lang'      => lang_path('vendor/discreteapibase')], 'lang');
+            $this->publishes([__DIR__ . '/../../stubs/User.php'      => app_path('/Models/User.php')], 'user-model');
         }
     }
 
@@ -91,18 +91,12 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $parsed = parse_url(config('app.url', 'http://localhost'));
         $domain = $parsed['host'];
         unset($parsed);
-        $router = $this->app->make(Router::class);
-        $router->aliasMiddleware(
-            'preload_user_data',
-            (config('discreteapibase.route_namespace') === 'app'
-                ? '\\App\\Http\\Middleware\\DiscreteApi\\Base\\PreloadUserData'
-                : '\\MakeIT\\DiscreteAp\\iBase\\Http\\Middleware\\PreloadUserData')
-        );
-        Route::domain($domain)->middleware(['api', 'preload_user_data'])->namespace(compute_route_namespace())->prefix(
-            'api'
-        )->group(function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes.php');
-        });
+        Route::domain($domain)
+             ->namespace(compute_route_namespace())
+             ->prefix('api')
+             ->group(function () {
+                 $this->loadRoutesFrom(__DIR__ . '/../routes.php');
+             });
     }
 
     /**
@@ -142,9 +136,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $this->app->singleton(LogoutContract::class, $actions_namespace . 'LogoutAction');
         $this->app->singleton(PasswordForgotContract::class, $actions_namespace . 'PasswordForgotAction');
         $this->app->singleton(PasswordResetContract::class, $actions_namespace . 'PasswordResetAction');
-        $this->app->singleton(ProfileUpdareContract::class, $actions_namespace . 'ProfileUpdateAction');
         $this->app->singleton(UserDeleteContract::class, $actions_namespace . 'UserDeleteAction');
         $this->app->singleton(UserForceDeleteContract::class, $actions_namespace . 'UserForceDeleteAction');
-        $this->app->singleton(ProfileAvatarUpdateContract::class, $actions_namespace . 'ProfileAvatarUpdateAction');
     }
 }

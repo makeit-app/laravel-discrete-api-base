@@ -14,5 +14,8 @@ This package must be installed and configured manually AS ROOT PACKAGE before th
 
 `composer require "make-it-app/laravel-discrete-api-base":"*"`
 
-
 ## Setup
+
+`php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="config"` - if you plan modify config
+`php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="migrations"` - if you plan to modify migrations
+`php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="lang"` - if you plan modyfy localization files

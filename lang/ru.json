@@ -1,3 +1,4 @@
 {
-  
+  "The provided password does not match your current password.": "Предоставленный пароль не соотвествует текущему",
+  "The password field must contain at least one symbol.": "Пароль должен содержать как минимум один символ"
 }

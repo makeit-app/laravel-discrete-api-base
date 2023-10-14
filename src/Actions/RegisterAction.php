@@ -24,8 +24,6 @@ class RegisterAction extends \MakeIT\DiscreteApi\Base\Contracts\RegisterContract
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
             ]);
-            $User->load(['profile']);
-
             return response()->json($User->toArray());
         }
 
