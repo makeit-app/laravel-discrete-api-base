@@ -161,7 +161,7 @@ class InstallDiscreteApiBaseCommand extends Command
          * @return array
          */
         $scanDir = function (string $type, string $dir) use ($namespaces) {
-            if ( !is_dir($dir) ) {
+            if (!is_dir($dir)) {
                 return [];
             }
             $return = [];
@@ -408,13 +408,13 @@ class InstallDiscreteApiBaseCommand extends Command
         switch ($type) {
             case 'observers':
                 $fqcn = $class['app_model'];
-                if ( preg_match("/^App\\\\Models\\\\DiscreteApi\\\\Base\\\\User$/", $fqcn) ) {
+                if (preg_match("/^App\\\\Models\\\\DiscreteApi\\\\Base\\\\User$/", $fqcn)) {
                     // re-point to App\Models\User model
                     $fqcn = "\\App\\Models\\User";
                     // remove App\Models\DiscreteApi\Base\User model (if created)
                     // @unlink($class['app_filename']);
                 }
-//dd($class['ns'] . '\\' . $class['classname'],$class['app_filename']);
+                //dd($class['ns'] . '\\' . $class['classname'],$class['app_filename']);
                 $this->_config['observersToRegister'][$fqcn] = $class['ns'] . '\\' . $class['classname'];
                 break;
             case 'policies':

@@ -2,7 +2,6 @@
 
 namespace MakeIT\DiscreteApi\Base\Actions;
 
-use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;

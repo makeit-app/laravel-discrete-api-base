@@ -70,7 +70,7 @@ class User extends Authenticatable // implements MustVerifyEmail
 
     public function isConfirmed(): Attribute
     {
-        return Attribute::get(fn() => (bool)$this->email_verified_at);
+        return Attribute::get(fn () => (bool)$this->email_verified_at);
     }
 
 }

@@ -5,7 +5,6 @@
 namespace MakeIT\DiscreteApi\Base\Providers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
