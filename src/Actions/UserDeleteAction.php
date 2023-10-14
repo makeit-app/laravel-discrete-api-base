@@ -1,16 +1,13 @@
 <?php
 
-/** @noinspection PhpUndefinedNamespaceInspection, PhpUndefinedClassInspection */
-
-namespace MakeIT\DiscreteApiBase\Actions;
+namespace MakeIT\DiscreteApi\Base\Actions;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
-use MakeIT\DiscreteApiBase\Contracts\UserDeleteContract;
-use MakeIT\DiscreteApiBase\Rules\MatchCurrentPasswordRule;
+use MakeIT\DiscreteApi\Base\Rules\MatchCurrentPasswordRule;
 
-class UserDeleteAction extends UserDeleteContract
+class UserDeleteAction extends \MakeIT\DiscreteApi\Base\Contracts\UserDeleteContract
 {
     public function handle(User $User, array $input): ?JsonResponse
     {

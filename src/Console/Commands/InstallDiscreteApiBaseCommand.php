@@ -1,8 +1,6 @@
 <?php
 
-/** @noinspection PhpPossiblePolymorphicInvocationInspection, PhpParamsInspection, PhpUndefinedMethodInspection, PhpUnusedAliasInspection */
-
-namespace MakeIT\DiscreteApiBase\Console\Commands;
+namespace MakeIT\DiscreteApi\Base\Console\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
@@ -20,7 +18,7 @@ class InstallDiscreteApiBaseCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'makeit:discrete-api:base:install';
+    protected $signature = 'makeit:discreteapi:base:install';
 
     /**
      * Pachage configuration
@@ -82,10 +80,10 @@ class InstallDiscreteApiBaseCommand extends Command
                     $this->newLine();
                     if (is_bool($v)) {
                         if ($v) {
-                            $this->comment("     use App\Traits\DiscreteApiBase\HasProfile;");
+                            $this->comment("     use App\Traits\DiscreteApi\Base\HasProfile;");
                             $this->generateDescendantss();
                         } else {
-                            $this->comment("     use MakeIT\DiscreteApiBase\Traits\HasProfile;");
+                            $this->comment("     use MakeIT\DiscreteApi\Base\Traits\HasProfile;");
                         }
                     }
                     $this->comment('     class User....');
@@ -199,7 +197,7 @@ class InstallDiscreteApiBaseCommand extends Command
                                 compute_namespace(),
                                 null,
                                 $namespaces[$type]
-                            ) . '\\DiscreteApiBase'
+                            ) . '\\DiscreteApi\\Base'
                         ),
                         'app_model' => null,
                         'app_path' => app_path(
@@ -207,7 +205,7 @@ class InstallDiscreteApiBaseCommand extends Command
                                 [compute_namespace(), '\\'],
                                 [null, '/'],
                                 $namespaces[$type]
-                            ) . '/DiscreteApiBase'
+                            ) . '/DiscreteApi/Base'
                         ),
                         'app_filename' => app_path(
                             str_replace(
@@ -226,7 +224,7 @@ class InstallDiscreteApiBaseCommand extends Command
                             $temp['model_namespace'] = str_replace(
                                 '\\Observers\\',
                                 '\\Models\\',
-                                'App\\Models\\DiscreteApiBase\\'
+                                'App\\Models\\DiscreteApi\\Base\\'
                             );
                             $temp['model'] = preg_replace(
                                 '/^\\\/',
@@ -240,7 +238,7 @@ class InstallDiscreteApiBaseCommand extends Command
                             $temp['app_model'] = str_replace(
                                 '\\Observers\\',
                                 '\\Models\\',
-                                'App\\Models\\DiscreteApiBase\\'
+                                'App\\Models\\DiscreteApi\\Base\\'
                             ) . str_replace(
                                 'Observer.php',
                                 null,
@@ -252,7 +250,7 @@ class InstallDiscreteApiBaseCommand extends Command
                             $temp['model_namespace'] = str_replace(
                                 '\\Policies\\',
                                 '\\Models\\',
-                                'App\\Models\\DiscreteApiBase\\'
+                                'App\\Models\\DiscreteApi\\Base\\'
                             );
                             $temp['model'] = preg_replace(
                                 '/^\\\/',
@@ -266,7 +264,7 @@ class InstallDiscreteApiBaseCommand extends Command
                             $temp['app_model'] = str_replace(
                                 '\\Observers\\',
                                 '\\Models\\',
-                                'App\\Models\\DiscreteApiBase\\'
+                                'App\\Models\\DiscreteApi\\Base\\'
                             ) . str_replace(
                                 'Observer.php',
                                 null,
@@ -317,6 +315,7 @@ class InstallDiscreteApiBaseCommand extends Command
     {
         $ns = new PhpNamespace($class['ns']);
         $target = TraitType::fromCode(file_get_contents($class['package_path']));
+        /** @noinspection PhpParamsInspection */
         $ns->add($target);
         $trait = $printer->setTypeResolving(false)->printNamespace($ns);
         $trait = str_replace(
@@ -324,7 +323,7 @@ class InstallDiscreteApiBaseCommand extends Command
                 config('discreteapibase.namespaces.package') . 'Models\\',
             ],
             [
-                config('discreteapibase.namespaces.app') . 'Models\\DiscreteApiBase\\',
+                config('discreteapibase.namespaces.app') . 'Models\\DiscreteApi\\Base\\',
             ],
             $trait
         );
@@ -361,11 +360,14 @@ class InstallDiscreteApiBaseCommand extends Command
     {
         $ns = new PhpNamespace($class['ns']);
         $target = ClassType::fromCode(file_get_contents($class['package_path']));
+        /** @noinspection PhpPossiblePolymorphicInvocationInspection */
         $target->setFinal()->setExtends($class['as']);
         if ($type == 'models') {
+            /** @noinspection PhpUndefinedMethodInspection */
             $tmp_traits = $target->getTraits();
             if (!empty($tmp_traits)) {
                 $traits = [];
+                /** @noinspection PhpUndefinedMethodInspection */
                 $target->setTraits([]);
                 foreach ($tmp_traits as $tr) {
                     $_bn = class_basename($tr->getName());
@@ -377,18 +379,20 @@ class InstallDiscreteApiBaseCommand extends Command
                             config('discreteapibase.namespaces.package'),
                             config('discreteapibase.namespaces.app'),
                             ($_fn)
-                        ) . '\\DiscreteApiBase\\'
+                        ) . '\\DiscreteApi\\Base\\'
                     ];
                 }
                 unset($tmp_traits, $tr);
                 if (!empty($traits)) {
                     foreach ($traits as $tr) {
+                        /** @noinspection PhpUndefinedMethodInspection */
                         $target->addTrait($tr['name']);
                     }
                     unset($tr);
                 }
             }
         }
+        /** @noinspection PhpParamsInspection */
         $ns->add($target);
         if (!empty($traits)) {
             foreach ($traits as $tr) {

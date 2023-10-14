@@ -1,11 +1,11 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Http\Controllers;
+namespace MakeIT\DiscreteApi\Base\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use MakeIT\DiscreteApiBase\Contracts\ProfileUpdareContract;
+use MakeIT\DiscreteApi\Base\Contracts\ProfileUpdareContract;
 
 class ProfileUpdateController extends DiscreteApiController
 {

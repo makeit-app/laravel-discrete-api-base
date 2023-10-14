@@ -1,9 +1,9 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Traits;
+namespace MakeIT\DiscreteApi\Base\Traits;
 
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use MakeIT\DiscreteApiBase\Models\Profile;
+use MakeIT\DiscreteApi\Base\Models\Profile;
 
 /**
  * @method hasOne(string $class, string $string)

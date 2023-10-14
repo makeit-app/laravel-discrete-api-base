@@ -1,6 +1,6 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Http\Middleware;
+namespace MakeIT\DiscreteApi\Base\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;

@@ -1,11 +1,11 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Http\Controllers;
+namespace MakeIT\DiscreteApi\Base\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use MakeIT\DiscreteApiBase\Contracts\RegisterContract;
+use MakeIT\DiscreteApi\Base\Contracts\RegisterContract;
 
 class RegisterController extends DiscreteApiController
 {

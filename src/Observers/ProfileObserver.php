@@ -1,8 +1,8 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Observers;
+namespace MakeIT\DiscreteApi\Base\Observers;
 
-use MakeIT\DiscreteApiBase\Models\Profile as Model;
+use MakeIT\DiscreteApi\Base\Models\Profile as Model;
 
 class ProfileObserver
 {

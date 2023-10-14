@@ -1,6 +1,6 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Models;
+namespace MakeIT\DiscreteApi\Base\Models;
 
 use Laravel\Sanctum\PersonalAccessToken as SanctumPersonalAccessToken;
 

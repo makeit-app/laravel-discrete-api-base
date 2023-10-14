@@ -1,6 +1,6 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Http\Controllers;
+namespace MakeIT\DiscreteApi\Base\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

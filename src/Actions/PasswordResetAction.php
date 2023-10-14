@@ -1,11 +1,10 @@
 <?php
 
-/** @noinspection PhpParamsInspection, PhpUndefinedNamespaceInspection, PhpUndefinedClassInspection */
-
-namespace MakeIT\DiscreteApiBase\Actions;
+namespace MakeIT\DiscreteApi\Base\Actions;
 
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password as PasswordBroker;
@@ -13,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 
-class PasswordResetAction extends \MakeIT\DiscreteApiBase\Contracts\PasswordResetContract
+class PasswordResetAction extends \MakeIT\DiscreteApi\Base\Contracts\PasswordResetContract
 {
     public function handle(array $input): ?JsonResponse
     {
@@ -27,7 +26,7 @@ class PasswordResetAction extends \MakeIT\DiscreteApiBase\Contracts\PasswordRese
                 return response()->json(['errors' => $Validator->errors()->toArray()], 400);
             }
             //
-            $status = PasswordBroker::reset($input, function (User $user, string $password) {
+            $status = PasswordBroker::reset($input, function (Authenticatable $user, string $password) {
                 $user->forceFill([
                     'password' => Hash::make($password),
                 ])->setRememberToken(Str::random(60));

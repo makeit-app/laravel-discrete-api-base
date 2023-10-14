@@ -1,14 +1,11 @@
 <?php
 
-/** @noinspection PhpUndefinedNamespaceInspection, PhpUndefinedClassInspection */
-
-namespace MakeIT\DiscreteApiBase\Actions;
+namespace MakeIT\DiscreteApi\Base\Actions;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use MakeIT\DiscreteApiBase\Contracts\UserForceDeleteContract;
 
-class UserForceDeleteAction extends UserForceDeleteContract
+class UserForceDeleteAction extends \MakeIT\DiscreteApi\Base\Contracts\UserForceDeleteContract
 {
     public function handle(User $Admin, User $User): ?JsonResponse
     {

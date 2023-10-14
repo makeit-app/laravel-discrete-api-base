@@ -10,7 +10,7 @@ if (! function_exists('compute_namespace')) {
             return config('discreteapibase.namespaces.app', '\\App\\');
         }
 
-        return config('discreteapibase.namespaces.package', '\\MakeIT\\DiscreteApiBase\\');
+        return config('discreteapibase.namespaces.package', '\\MakeIT\\DiscreteApi\\Base\\');
     }
 }
 if (! function_exists('compute_route_namespace')) {
@@ -21,7 +21,7 @@ if (! function_exists('compute_route_namespace')) {
     {
         switch (config('discreteapibase.route_namespace')) {
             case 'app':
-                return compute_namespace().'Http\\Controllers\\DiscreteApiBase';
+                return compute_namespace().'Http\\Controllers\\DiscreteApi\\Base';
                 break;
             default:
             case 'package':

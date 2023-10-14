@@ -38,6 +38,6 @@ return [
      */
     'namespaces' => [
         'app' => '\\App\\', // `app/` directory
-        'package' => '\\MakeIT\\DiscreteApiBase\\', // `package/src/` directory
+        'package' => '\\MakeIT\\DiscreteApi\\Base\\', // `package/src/` directory
     ],
 ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Traits;
+namespace MakeIT\DiscreteApi\Base\Traits;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

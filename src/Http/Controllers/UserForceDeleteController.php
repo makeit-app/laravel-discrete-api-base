@@ -1,12 +1,12 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Http\Controllers;
+namespace MakeIT\DiscreteApi\Base\Http\Controllers;
 
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use MakeIT\DiscreteApiBase\Contracts\UserForceDeleteContract;
+use MakeIT\DiscreteApi\Base\Contracts\UserForceDeleteContract;
 
 class UserForceDeleteController extends DiscreteApiController
 {

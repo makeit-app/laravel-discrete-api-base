@@ -1,8 +1,6 @@
 <?php
 
-/** @noinspection PhpUndefinedNamespaceInspection, PhpUndefinedClassInspection */
-
-namespace MakeIT\DiscreteApiBase\Contracts;
+namespace MakeIT\DiscreteApi\Base\Contracts;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;

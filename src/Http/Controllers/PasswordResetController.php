@@ -1,10 +1,10 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Http\Controllers;
+namespace MakeIT\DiscreteApi\Base\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use MakeIT\DiscreteApiBase\Contracts\PasswordResetContract;
+use MakeIT\DiscreteApi\Base\Contracts\PasswordResetContract;
 
 /**
  * {@inheritDoc}

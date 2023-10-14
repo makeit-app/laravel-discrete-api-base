@@ -1,13 +1,13 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Actions;
+namespace MakeIT\DiscreteApi\Base\Actions;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
-use MakeIT\DiscreteApiBase\Notifications\ResetPasswordNotification;
+use MakeIT\DiscreteApi\Base\Notifications\ResetPasswordNotification;
 
-class PasswordForgotAction extends \MakeIT\DiscreteApiBase\Contracts\PasswordForgotContract
+class PasswordForgotAction extends \MakeIT\DiscreteApi\Base\Contracts\PasswordForgotContract
 {
     public function handle(array $input): ?JsonResponse
     {

@@ -1,12 +1,12 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Models;
+namespace MakeIT\DiscreteApi\Base\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use MakeIT\DiscreteApiBase\Traits\BelongsToUser;
-use MakeIT\DiscreteApiBase\Traits\HasProfileAvatar;
+use MakeIT\DiscreteApi\Base\Traits\BelongsToUser;
+use MakeIT\DiscreteApi\Base\Traits\HasProfileAvatar;
 
 /**
  * @property mixed $avatar_path{@inheritDoc}

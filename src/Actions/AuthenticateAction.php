@@ -1,15 +1,13 @@
 <?php
 
-/** @noinspection PhpUndefinedNamespaceInspection, PhpUndefinedClassInspection */
-
-namespace MakeIT\DiscreteApiBase\Actions;
+namespace MakeIT\DiscreteApi\Base\Actions;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class AuthenticateAction extends \MakeIT\DiscreteApiBase\Contracts\AuthenticateContract
+class AuthenticateAction extends \MakeIT\DiscreteApi\Base\Contracts\AuthenticateContract
 {
     public function handle(array $input): ?JsonResponse
     {

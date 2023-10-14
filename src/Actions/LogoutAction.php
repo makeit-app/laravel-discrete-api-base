@@ -1,13 +1,11 @@
 <?php
 
-/** @noinspection PhpUndefinedNamespaceInspection, PhpUndefinedClassInspection */
-
-namespace MakeIT\DiscreteApiBase\Actions;
+namespace MakeIT\DiscreteApi\Base\Actions;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
-class LogoutAction extends \MakeIT\DiscreteApiBase\Contracts\LogoutContract
+class LogoutAction extends \MakeIT\DiscreteApi\Base\Contracts\LogoutContract
 {
     public function handle(User $User): ?JsonResponse
     {

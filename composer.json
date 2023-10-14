@@ -15,7 +15,7 @@
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "MakeIT\\DiscreteApiBase\\": "src/"
+      "MakeIT\\DiscreteApi\\Base\\": "src/"
     },
     "files": [
       "src/helpers.php"
@@ -49,7 +49,7 @@
     },
     "laravel": {
       "providers": [
-        "MakeIT\\DiscreteApiBase\\Providers\\DiscreteApiBaseServiceProvider"
+        "MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider"
       ],
       "aliases": {
       }

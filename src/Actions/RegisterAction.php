@@ -1,8 +1,6 @@
 <?php
 
-/** @noinspection PhpUndefinedNamespaceInspection, PhpUndefinedClassInspection */
-
-namespace MakeIT\DiscreteApiBase\Actions;
+namespace MakeIT\DiscreteApi\Base\Actions;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -10,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 
-class RegisterAction extends \MakeIT\DiscreteApiBase\Contracts\RegisterContract
+class RegisterAction extends \MakeIT\DiscreteApi\Base\Contracts\RegisterContract
 {
     public function handle(array $input): ?JsonResponse
     {

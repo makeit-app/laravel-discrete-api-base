@@ -1,8 +1,6 @@
 <?php
 
-/** @noinspection PhpUndefinedFieldInspection */
-
-namespace MakeIT\DiscreteApiBase\Rules;
+namespace MakeIT\DiscreteApi\Base\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;

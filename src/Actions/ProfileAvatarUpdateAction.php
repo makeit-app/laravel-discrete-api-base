@@ -1,14 +1,12 @@
 <?php
 
-/** @noinspection PhpUndefinedNamespaceInspection, PhpUndefinedClassInspection */
-
-namespace MakeIT\DiscreteApiBase\Actions;
+namespace MakeIT\DiscreteApi\Base\Actions;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
-class ProfileAvatarUpdateAction extends \MakeIT\DiscreteApiBase\Contracts\ProfileAvatarUpdateContract
+class ProfileAvatarUpdateAction extends \MakeIT\DiscreteApi\Base\Contracts\ProfileAvatarUpdateContract
 {
     public function handle(User $User, array $input = []): ?JsonResponse
     {

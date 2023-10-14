@@ -2,7 +2,7 @@
 
 /** @noinspection 1PhpFullyQualifiedNameUsageInspection, 1PhpUndefinedClassInspection, 1PhpUndefinedNamespaceInspection, 1PhpUndefinedConstantInspection */
 
-namespace MakeIT\DiscreteApiBase\Providers;
+namespace MakeIT\DiscreteApi\Base\Providers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Routing\Router;
@@ -10,16 +10,16 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
-use MakeIT\DiscreteApiBase\Console\Commands\InstallDiscreteApiBaseCommand;
-use MakeIT\DiscreteApiBase\Contracts\AuthenticateContract;
-use MakeIT\DiscreteApiBase\Contracts\LogoutContract;
-use MakeIT\DiscreteApiBase\Contracts\PasswordForgotContract;
-use MakeIT\DiscreteApiBase\Contracts\PasswordResetContract;
-use MakeIT\DiscreteApiBase\Contracts\ProfileAvatarUpdateContract;
-use MakeIT\DiscreteApiBase\Contracts\ProfileUpdareContract;
-use MakeIT\DiscreteApiBase\Contracts\RegisterContract;
-use MakeIT\DiscreteApiBase\Contracts\UserDeleteContract;
-use MakeIT\DiscreteApiBase\Contracts\UserForceDeleteContract;
+use MakeIT\DiscreteApi\Base\Console\Commands\InstallDiscreteApiBaseCommand;
+use MakeIT\DiscreteApi\Base\Contracts\AuthenticateContract;
+use MakeIT\DiscreteApi\Base\Contracts\LogoutContract;
+use MakeIT\DiscreteApi\Base\Contracts\PasswordForgotContract;
+use MakeIT\DiscreteApi\Base\Contracts\PasswordResetContract;
+use MakeIT\DiscreteApi\Base\Contracts\ProfileAvatarUpdateContract;
+use MakeIT\DiscreteApi\Base\Contracts\ProfileUpdareContract;
+use MakeIT\DiscreteApi\Base\Contracts\RegisterContract;
+use MakeIT\DiscreteApi\Base\Contracts\UserDeleteContract;
+use MakeIT\DiscreteApi\Base\Contracts\UserForceDeleteContract;
 
 class DiscreteApiBaseServiceProvider extends ServiceProvider
 {
@@ -56,7 +56,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configurePersonalAccessToken(): void
     {
-        Sanctum::usePersonalAccessTokenModel(compute_namespace() . 'Models\\DiscreteApiBase\\PersonalAccessToken');
+        Sanctum::usePersonalAccessTokenModel(compute_namespace() . 'Models\\DiscreteApi\\Base\\PersonalAccessToken');
     }
 
     /**
@@ -88,7 +88,6 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configureRoutes(): void
     {
-        //dd($this->computeNamespace());
         $parsed = parse_url(config('app.url', 'http://localhost'));
         $domain = $parsed['host'];
         unset($parsed);
@@ -96,25 +95,14 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $router->aliasMiddleware(
             'preload_user_data',
             (config('discreteapibase.route_namespace') === 'app'
-                ? '\\App\\Http\\Middleware\\DiscreteApiBase\\PreloadUserData'
-                : '\\MakeIT\\DiscreteApiBase\\Http\\Middleware\\PreloadUserData')
+                ? '\\App\\Http\\Middleware\\DiscreteApi\\Base\\PreloadUserData'
+                : '\\MakeIT\\DiscreteAp\\iBase\\Http\\Middleware\\PreloadUserData')
         );
         Route::domain($domain)->middleware(['api', 'preload_user_data'])->namespace(compute_route_namespace())->prefix(
             'api'
         )->group(function () {
             $this->loadRoutesFrom(__DIR__ . '/../routes.php');
         });
-        /*
-                RateLimiter::for('login', function (Request $request) {
-                    $throttleKey = Str::transliterate(
-                        Str::lower($request->input(config('discreteapibase.username'))) . '|' . $request->ip()
-                    );
-                    return Limit::perMinute(1)->by($throttleKey);
-                });
-                RateLimiter::for('two-factor', function (Request $request) {
-                    return Limit::perMinute(1)->by($request->session()->get('login.id'));
-                });
-        */
     }
 
     /**
@@ -148,7 +136,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configureResponseBindings(): void
     {
-        $actions_namespace = compute_namespace() . 'Actions\\DiscreteApiBase\\';
+        $actions_namespace = compute_namespace() . 'Actions\\DiscreteApi\\Base\\';
         $this->app->singleton(RegisterContract::class, $actions_namespace . 'RegisterAction');
         $this->app->singleton(AuthenticateContract::class, $actions_namespace . 'AuthenticateAction');
         $this->app->singleton(LogoutContract::class, $actions_namespace . 'LogoutAction');

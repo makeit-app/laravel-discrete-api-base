@@ -1,6 +1,6 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Contracts;
+namespace MakeIT\DiscreteApi\Base\Contracts;
 
 use Illuminate\Http\JsonResponse;
 

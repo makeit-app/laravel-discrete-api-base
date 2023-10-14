@@ -1,11 +1,14 @@
 <?php
 
-namespace MakeIT\DiscreteApiBase\Traits;
+namespace MakeIT\DiscreteApi\Base\Traits;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @method forceFill(null[] $array)
+ */
 trait HasProfileAvatar
 {
     /**
