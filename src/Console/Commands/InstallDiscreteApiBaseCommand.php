@@ -49,7 +49,7 @@ class InstallDiscreteApiBaseCommand extends Command
         //
         if (is_file(base_path('config/discreteapibase.php'))) {
             if (!$this->confirm(
-                question: "Before begin, we need to force delete existing config file to avoid mistakes in the future confuration?\n"
+                question: "Before begin, we need to force delete existing config file to avoid mistakes in the future configuration.\n"
             )) {
                 $this->error('Cant continue with existing config file:');
                 $this->error('    config/discreteapibase.php          ');
@@ -87,9 +87,7 @@ class InstallDiscreteApiBaseCommand extends Command
                     if (is_bool($v)) {
                         $this->_config['email_verification'] = $v;
                         if ($v) {
-                            $this->info(
-                                "You need to add MustVerifyEmail implementation to Your App\Models\User Model."
-                            );
+                            $this->info('You need to add MustVerifyEmail implementation to Your App\Models\User Model.');
                             $this->newLine();
                             $this->comment("     use Illuminate\Contracts\Auth\MustVerifyEmail;");
                             $this->comment('     class User extends Authenticatable implements MustVerifyEmail');
@@ -138,10 +136,11 @@ class InstallDiscreteApiBaseCommand extends Command
             'models' => realpath(__DIR__ . '/../../Models'),
             'notifications' => realpath(__DIR__ . '/../../Notifications'),
             'observers' => realpath(__DIR__ . '/../../Observers'),
+            'policies' => realpath(__DIR__ . '/../../Policies'),
             'rules' => realpath(__DIR__ . '/../../Rules'),
             'traits' => realpath(__DIR__ . '/../../Traits'),
         ];
-        $namespace = compute_discreteapi_base_namespace();
+        $namespace = $this->compute_namespace();
         $namespaces = [
             'actions' => $namespace . 'Actions',
             'controllers' => $namespace . 'Http\Controllers',
@@ -149,6 +148,7 @@ class InstallDiscreteApiBaseCommand extends Command
             'models' => $namespace . 'Models',
             'notifications' => $namespace . 'Notifications',
             'observers' => $namespace . 'Observers',
+            'policies' => $namespace . 'Policies',
             'rules' => $namespace . 'Rules',
             'traits' => $namespace . 'Traits',
         ];
@@ -174,36 +174,12 @@ class InstallDiscreteApiBaseCommand extends Command
                         'classname' => str_replace('.php', null, basename($path)),
                         'model' => null,
                         'model_namespace' => null,
-                        'use' => preg_replace(
-                            '/^\\\/',
-                            null,
-                            $namespaces[$type] . '\\' . str_replace('.php', null, basename($path))
-                        ),
+                        'use' => preg_replace('/^\\\/', null, $namespaces[$type] . '\\' . str_replace('.php', null, basename($path))),
                         'as' => 'DiscreteApiBase' . str_replace('.php', null, basename($path)),
-                        'ns' => preg_replace(
-                            '/^\\\/',
-                            null,
-                            $this->_config['namespaces']['app'] . str_replace(
-                                compute_discreteapi_base_namespace(),
-                                null,
-                                $namespaces[$type]
-                            ) . '\\DiscreteApi\\Base'
-                        ),
+                        'ns' => preg_replace('/^\\\/', null, $this->_config['namespaces']['app'] . str_replace($this->compute_namespace(), null, $namespaces[$type]) . '\\DiscreteApi\\Base'),
                         'app_model' => null,
-                        'app_path' => app_path(
-                            str_replace(
-                                [compute_discreteapi_base_namespace(), '\\'],
-                                [null, '/'],
-                                $namespaces[$type]
-                            ) . '/DiscreteApi/Base'
-                        ),
-                        'app_filename' => app_path(
-                            str_replace(
-                                [compute_discreteapi_base_namespace(), '\\'],
-                                [null, '/'],
-                                $namespaces[$type]
-                            ) . '/DiscreteApi/Base/' . basename($path)
-                        ),
+                        'app_path' => app_path(str_replace([$this->compute_namespace(), '\\'], [null, '/'], $namespaces[$type]) . '/DiscreteApi/Base'),
+                        'app_filename' => app_path(str_replace([$this->compute_namespace(), '\\'], [null, '/'], $namespaces[$type]) . '/DiscreteApi/Base/' . basename($path)),
                         'package_path' => $path,
                     ];
                     switch ($type) {
@@ -216,50 +192,14 @@ class InstallDiscreteApiBaseCommand extends Command
                                 '\\Models\\',
                                 'App\\Models\\DiscreteApi\\Base\\'
                             );
-                            $temp['model'] = preg_replace(
-                                '/^\\\/',
-                                null,
-                                str_replace(
-                                    '\\Observers\\',
-                                    '\\Models\\',
-                                    ($namespaces[$type] . '\\' . str_replace('Observer.php', null, basename($path)))
-                                )
-                            );
-                            $temp['app_model'] = str_replace(
-                                '\\Observers\\',
-                                '\\Models\\',
-                                'App\\Models\\DiscreteApi\\Base\\'
-                            ) . str_replace(
-                                'Observer.php',
-                                null,
-                                basename($path)
-                            );
+                            $temp['model'] = preg_replace('/^\\\/', null, str_replace('\\Observers\\', '\\Models\\', ($namespaces[$type] . '\\' . str_replace('Observer.php', null, basename($path)))));
+                            $temp['app_model'] = str_replace('\\Observers\\', '\\Models\\', 'App\\Models\\DiscreteApi\\Base\\') . str_replace('Observer.php', null, basename($path));
                             break;
                         case 'policies':
                             unset($temp['trait']);
-                            $temp['model_namespace'] = str_replace(
-                                '\\Policies\\',
-                                '\\Models\\',
-                                'App\\Models\\DiscreteApi\\Base\\'
-                            );
-                            $temp['model'] = preg_replace(
-                                '/^\\\/',
-                                null,
-                                str_replace(
-                                    '\\Observers\\',
-                                    '\\Models\\',
-                                    ($namespaces[$type] . '\\' . str_replace('Observer.php', null, basename($path)))
-                                )
-                            );
-                            $temp['app_model'] = str_replace(
-                                '\\Observers\\',
-                                '\\Models\\',
-                                'App\\Models\\DiscreteApi\\Base\\'
-                            ) . str_replace(
-                                'Observer.php',
-                                null,
-                                basename($path)
-                            );
+                            $temp['model_namespace'] = str_replace('\\Policies\\', '\\Models\\', 'App\\Models\\DiscreteApi\\Base\\');
+                            $temp['model'] = preg_replace('/^\\\/', null, str_replace('\\Observers\\', '\\Models\\', ($namespaces[$type] . '\\' . str_replace('Observer.php', null, basename($path)))));
+                            $temp['app_model'] = str_replace('\\Observers\\', '\\Models\\', 'App\\Models\\DiscreteApi\\Base\\') . str_replace('Observer.php', null, basename($path));
                             break;
                         default:
                             unset($temp['trait']);
@@ -409,12 +349,8 @@ class InstallDiscreteApiBaseCommand extends Command
             case 'observers':
                 $fqcn = $class['app_model'];
                 if (preg_match("/^App\\\\Models\\\\DiscreteApi\\\\Base\\\\User$/", $fqcn)) {
-                    // re-point to App\Models\User model
                     $fqcn = "\\App\\Models\\User";
-                    // remove App\Models\DiscreteApi\Base\User model (if created)
-                    // @unlink($class['app_filename']);
                 }
-                //dd($class['ns'] . '\\' . $class['classname'],$class['app_filename']);
                 $this->_config['observersToRegister'][$fqcn] = $class['ns'] . '\\' . $class['classname'];
                 break;
             case 'policies':
@@ -434,5 +370,14 @@ class InstallDiscreteApiBaseCommand extends Command
             config_path('discreteapibase.php'),
             "<?php\n\nreturn " . $content . ";\n"
         );
+    }
+
+    protected function compute_namespace(): string
+    {
+        if (config('discreteapibase.route_namespace') === 'app') {
+            return config('discreteapibase.namespaces.app', '\\App\\');
+        }
+
+        return config('discreteapibase.namespaces.package', '\\MakeIT\\DiscreteApi\\Base\\');
     }
 }

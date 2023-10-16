@@ -16,10 +16,7 @@
   "autoload": {
     "psr-4": {
       "MakeIT\\DiscreteApi\\Base\\": "src/"
-    },
-    "files": [
-      "src/helpers.php"
-    ]
+    }
   },
   "authors": [
     {
@@ -50,9 +47,7 @@
     "laravel": {
       "providers": [
         "MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider"
-      ],
-      "aliases": {
-      }
+      ]
     }
   },
   "config": {
