@@ -17,7 +17,7 @@ if (! function_exists('compute_discreteapi_base_route_namespace')) {
     /**
      * Returns the appropriate Route Namespace for the api, as specified in the configuration
      */
-    function compute_route_discreteapi_base_namespace(): string
+    function compute_discreteapi_base_route_namespace(): string
     {
         switch (config('discreteapibase.route_namespace')) {
             case 'app':
