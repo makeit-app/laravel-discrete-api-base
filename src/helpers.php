@@ -1,10 +1,10 @@
 <?php
 
-if (! function_exists('compute_namespace')) {
+if (! function_exists('compute_discreteapi_base_namespace')) {
     /**
      * Returns the appropriate Namespace for the api, as specified in the configuration
      */
-    function compute_namespace(): string
+    function compute_discreteapi_base_namespace(): string
     {
         if (config('discreteapibase.route_namespace') === 'app') {
             return config('discreteapibase.namespaces.app', '\\App\\');
@@ -13,19 +13,19 @@ if (! function_exists('compute_namespace')) {
         return config('discreteapibase.namespaces.package', '\\MakeIT\\DiscreteApi\\Base\\');
     }
 }
-if (! function_exists('compute_route_namespace')) {
+if (! function_exists('compute_discreteapi_base_route_namespace')) {
     /**
      * Returns the appropriate Route Namespace for the api, as specified in the configuration
      */
-    function compute_route_namespace(): string
+    function compute_route_discreteapi_base_namespace(): string
     {
         switch (config('discreteapibase.route_namespace')) {
             case 'app':
-                return compute_namespace().'Http\\Controllers\\DiscreteApi\\Base';
+                return compute_discreteapi_base_namespace().'Http\\Controllers\\DiscreteApi\\Base';
                 break;
             default:
             case 'package':
-                return compute_namespace().'Http\\Controllers';
+                return compute_discreteapi_base_namespace().'Http\\Controllers';
         }
     }
 }

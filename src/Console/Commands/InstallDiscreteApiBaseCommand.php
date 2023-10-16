@@ -141,7 +141,7 @@ class InstallDiscreteApiBaseCommand extends Command
             'rules' => realpath(__DIR__ . '/../../Rules'),
             'traits' => realpath(__DIR__ . '/../../Traits'),
         ];
-        $namespace = compute_namespace();
+        $namespace = compute_discreteapi_base_namespace();
         $namespaces = [
             'actions' => $namespace . 'Actions',
             'controllers' => $namespace . 'Http\Controllers',
@@ -184,7 +184,7 @@ class InstallDiscreteApiBaseCommand extends Command
                             '/^\\\/',
                             null,
                             $this->_config['namespaces']['app'] . str_replace(
-                                compute_namespace(),
+                                compute_discreteapi_base_namespace(),
                                 null,
                                 $namespaces[$type]
                             ) . '\\DiscreteApi\\Base'
@@ -192,14 +192,14 @@ class InstallDiscreteApiBaseCommand extends Command
                         'app_model' => null,
                         'app_path' => app_path(
                             str_replace(
-                                [compute_namespace(), '\\'],
+                                [compute_discreteapi_base_namespace(), '\\'],
                                 [null, '/'],
                                 $namespaces[$type]
                             ) . '/DiscreteApi/Base'
                         ),
                         'app_filename' => app_path(
                             str_replace(
-                                [compute_namespace(), '\\'],
+                                [compute_discreteapi_base_namespace(), '\\'],
                                 [null, '/'],
                                 $namespaces[$type]
                             ) . '/DiscreteApi/Base/' . basename($path)

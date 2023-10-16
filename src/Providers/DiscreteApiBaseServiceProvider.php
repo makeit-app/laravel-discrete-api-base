@@ -53,7 +53,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configurePersonalAccessToken(): void
     {
-        Sanctum::usePersonalAccessTokenModel(compute_namespace() . 'Models\\DiscreteApi\\Base\\PersonalAccessToken');
+        Sanctum::usePersonalAccessTokenModel(compute_discreteapi_base_namespace() . 'Models\\DiscreteApi\\Base\\PersonalAccessToken');
     }
 
     /**
@@ -91,7 +91,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $domain = $parsed['host'];
         unset($parsed);
         Route::domain($domain)
-             ->namespace(compute_route_namespace())
+             ->namespace(compute_discreteapi_base_route_namespace())
              ->prefix('api')
              ->group(function () {
                  $this->loadRoutesFrom(__DIR__ . '/../routes.php');
@@ -129,7 +129,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configureResponseBindings(): void
     {
-        $actions_namespace = compute_namespace() . 'Actions\\DiscreteApi\\Base\\';
+        $actions_namespace = compute_discreteapi_base_namespace() . 'Actions\\DiscreteApi\\Base\\';
         $this->app->singleton(RegisterContract::class, $actions_namespace . 'RegisterAction');
         $this->app->singleton(AuthenticateContract::class, $actions_namespace . 'AuthenticateAction');
         $this->app->singleton(LogoutContract::class, $actions_namespace . 'LogoutAction');
