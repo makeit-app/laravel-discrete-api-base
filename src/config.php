@@ -10,7 +10,6 @@ return [
      */
     'features' => [
         'email_verification' => true,
-        'avatars' => true,
         'user_delete' => true,
     ],
     /**
