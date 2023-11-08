@@ -1,12 +1,9 @@
 <?php
-
 /** @noinspection 1PhpFullyQualifiedNameUsageInspection, 1PhpUndefinedClassInspection, 1PhpUndefinedNamespaceInspection, 1PhpUndefinedConstantInspection */
 
 namespace MakeIT\DiscreteApi\Base\Providers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +16,7 @@ use MakeIT\DiscreteApi\Base\Contracts\PasswordResetContract;
 use MakeIT\DiscreteApi\Base\Contracts\RegisterContract;
 use MakeIT\DiscreteApi\Base\Contracts\UserDeleteContract;
 use MakeIT\DiscreteApi\Base\Contracts\UserForceDeleteContract;
+use MakeIT\DiscreteApi\Base\Helpers\DiscreteApiHelpers;
 
 class DiscreteApiBaseServiceProvider extends ServiceProvider
 {
@@ -33,11 +31,9 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      *
-     * @param Router $router
-     * @param Kernel $kernel
      * @throws BindingResolutionException
      */
-    public function boot(Router $router, Kernel $kernel): void
+    public function boot(): void
     {
         $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'discreteapibase');
         $this->loadJsonTranslationsFrom(__DIR__ . '/../../lang');
@@ -46,7 +42,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $this->configurePersonalAccessToken();
         $this->configurePublishing();
         $this->configureCommands();
-        $this->configureRoutes($router, $kernel);
+        $this->configureRoutes();
         $this->configurePolicies();
         $this->configureObservers();
         $this->configureResponseBindings();
@@ -57,7 +53,10 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configurePersonalAccessToken(): void
     {
-        Sanctum::usePersonalAccessTokenModel($this->compute_namespace() . 'Models\\DiscreteApi\\Base\\PersonalAccessToken');
+        Sanctum::usePersonalAccessTokenModel(
+            DiscreteApiHelpers::compute_namespace(config('discreteapibase'))
+            . 'Models\\DiscreteApi\\Base\\PersonalAccessToken'
+        );
     }
 
     /**
@@ -67,8 +66,8 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([__DIR__ . '/../../database/migrations' => base_path('database/migrations')], 'migrations');
-            $this->publishes([__DIR__ . '/../../resources/lang'      => lang_path('vendor/discreteapibase')], 'lang');
-            $this->publishes([__DIR__ . '/../../stubs/User.php'      => app_path('/Models/User.php')], 'user-model');
+            $this->publishes([__DIR__ . '/../../resources/lang' => lang_path('vendor/discreteapibase')], 'lang');
+            $this->publishes([__DIR__ . '/../../stubs/User.php' => app_path('/Models/User.php')], 'user-model');
         }
     }
 
@@ -86,28 +85,24 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
 
     /**
      * Configure the routes offered by the application.
-     *
-     * @param Router $router
-     * @param Kernel $kernel
-     * @throws BindingResolutionException
      */
-    protected function configureRoutes(Router $router, Kernel $kernel): void
+    protected function configureRoutes(): void
     {
         $parsed = parse_url(config('app.url', 'http://localhost'));
         $domain = $parsed['host'];
         unset($parsed);
-        $ns = $this->compute_namespace();
+        $ns = DiscreteApiHelpers::compute_namespace(config('discreteapibase'));
         Route::domain($domain)
-             ->middleware(['api'])
-             ->namespace(
-                 config('discreteapibase.route_namespace') === 'app'
-                ? $ns . 'Http\\Controllers\\DiscreteApi\\Base'
-                : $ns . 'Http\\Controllers'
-             )
-             ->prefix('api')
-             ->group(function () {
-                 $this->loadRoutesFrom(__DIR__ . '/../routes.php');
-             });
+            ->middleware(['api'])
+            ->namespace(
+                config('discreteapibase.route_namespace') === 'app'
+                    ? $ns . 'Http\\Controllers\\DiscreteApi\\Base'
+                    : $ns . 'Http\\Controllers'
+            )
+            ->prefix('api')
+            ->group(function () {
+                $this->loadRoutesFrom(__DIR__ . '/../routes.php');
+            });
     }
 
     /**
@@ -141,9 +136,10 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configureResponseBindings(): void
     {
+        $namespace = DiscreteApiHelpers::compute_namespace(config('discreteapibase'));
         $actions_namespace = config('discreteapiprofile.route_namespace') === 'app'
-            ? $this->compute_namespace() . 'Actions\\DiscreteApi\\Base\\'
-            : $this->compute_namespace() . 'Actions\\';
+            ? $namespace . 'Actions\\DiscreteApi\\Base\\'
+            : $namespace . 'Actions\\';
         $this->app->singleton(RegisterContract::class, $actions_namespace . 'RegisterAction');
         $this->app->singleton(AuthenticateContract::class, $actions_namespace . 'AuthenticateAction');
         $this->app->singleton(LogoutContract::class, $actions_namespace . 'LogoutAction');
@@ -151,14 +147,5 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $this->app->singleton(PasswordResetContract::class, $actions_namespace . 'PasswordResetAction');
         $this->app->singleton(UserDeleteContract::class, $actions_namespace . 'UserDeleteAction');
         $this->app->singleton(UserForceDeleteContract::class, $actions_namespace . 'UserForceDeleteAction');
-    }
-
-    protected function compute_namespace(): string
-    {
-        if (config('discreteapibase.route_namespace') === 'app') {
-            return config('discreteapibase.namespaces.app', '\\App\\');
-        }
-
-        return config('discreteapibase.namespaces.package', '\\MakeIT\\DiscreteApi\\Base\\');
     }
 }
