@@ -65,9 +65,9 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
     protected function configurePublishing(): void
     {
         if ($this->app->runningInConsole()) {
-            $this->publishes([__DIR__ . '/../../database/migrations' => base_path('database/migrations')], 'migrations');
-            $this->publishes([__DIR__ . '/../../resources/lang' => lang_path('vendor/discreteapibase')], 'lang');
-            $this->publishes([__DIR__ . '/../../stubs/User.php' => app_path('/Models/User.php')], 'user-model');
+            $this->publishes([realpath(__DIR__ . '/../../database/migrations') => base_path('database/migrations')], 'migrations');
+            $this->publishes([realpath(__DIR__ . '/../../lang') => lang_path('vendor/discreteapibase')], 'lang');
+            $this->publishes([realpath(__DIR__ . '/../../stubs/User.php') => app_path('/Models/User.php')], 'user-model');
         }
     }
 
