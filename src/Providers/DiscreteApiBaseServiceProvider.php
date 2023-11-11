@@ -137,7 +137,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
     protected function configureResponseBindings(): void
     {
         $namespace = DiscreteApiHelpers::compute_namespace(config('discreteapibase'));
-        $actions_namespace = config('discreteapiprofile.route_namespace') === 'app'
+        $actions_namespace = config('discreteapibase.route_namespace') === 'app'
             ? $namespace . 'Actions\\DiscreteApi\\Base\\'
             : $namespace . 'Actions\\';
         $this->app->singleton(RegisterContract::class, $actions_namespace . 'RegisterAction');
