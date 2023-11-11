@@ -136,10 +136,9 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configureResponseBindings(): void
     {
-        $namespace = DiscreteApiHelpers::compute_namespace(config('discreteapibase'));
         $actions_namespace = config('discreteapibase.route_namespace') === 'app'
-            ? $namespace . 'Actions\\DiscreteApi\\Base\\'
-            : $namespace . 'Actions\\';
+            ? DiscreteApiHelpers::compute_namespace(config('discreteapibase')) . 'Actions\\DiscreteApi\\Base\\'
+            : DiscreteApiHelpers::compute_namespace(config('discreteapibase')) . 'Actions\\';
         $this->app->singleton(RegisterContract::class, $actions_namespace . 'RegisterAction');
         $this->app->singleton(AuthenticateContract::class, $actions_namespace . 'AuthenticateAction');
         $this->app->singleton(LogoutContract::class, $actions_namespace . 'LogoutAction');
