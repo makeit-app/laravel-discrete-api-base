@@ -4,15 +4,24 @@ namespace App\Models;
 
 //use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
+use MakeIT\DiscreteApi\Profile\Models\Profile;
 use MakeIT\UserRoles\HasRoles;
 
+/**
+ * @property Profile|App\Models\DiscreteApi\Profile\Profile $profile
+ * @property Collection|EloquentCollection $organizations
+ * @method hasRole(string[] $array)
+ * @method organizations()
+ */
 class User extends Authenticatable // implements MustVerifyEmail
 {
     use HasApiTokens;

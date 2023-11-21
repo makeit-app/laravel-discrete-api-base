@@ -1,4 +1,5 @@
 <?php
+
 /** @noinspection 1PhpFullyQualifiedNameUsageInspection, 1PhpUndefinedClassInspection, 1PhpUndefinedNamespaceInspection, 1PhpUndefinedConstantInspection */
 
 namespace MakeIT\DiscreteApi\Base\Providers;

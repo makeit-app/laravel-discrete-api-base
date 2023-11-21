@@ -1,4 +1,5 @@
 <?php
+
 /** @noinspection PhpParamsInspection */
 
 /** @noinspection PhpPossiblePolymorphicInvocationInspection */
@@ -14,7 +15,6 @@ use Nette\PhpGenerator\TraitType;
 
 class DiscreteApiHelpers
 {
-
     /**
      * Return Package directory Structure as a paths
      *
@@ -105,10 +105,10 @@ class DiscreteApiHelpers
                         )
                     ),
                     'as' => 'DiscreteApi' . $package . str_replace(
-                            '.php',
-                            null,
-                            basename($path)
-                        ),
+                        '.php',
+                        null,
+                        basename($path)
+                    ),
                     'ns' => preg_replace(
                         '/^\\\/',
                         null,
@@ -213,12 +213,12 @@ class DiscreteApiHelpers
                     $new_trait = [
                         'name' => $_bn,
                         'path' => str_replace(
-                                $config['namespaces']['package'],
-                                $config['namespaces']['app'],
-                                $_fn
-                            ) . '\\'
+                            $config['namespaces']['package'],
+                            $config['namespaces']['app'],
+                            $_fn
+                        ) . '\\'
                     ];
-                    if (preg_match("/^\\\App/iu", $new_trait['path'])){
+                    if (preg_match("/^\\\App/iu", $new_trait['path'])) {
                         $new_trait['path'] .= 'DiscreteApi\\' . $package . '\\';
                     }
                     $traits[] = $new_trait;
