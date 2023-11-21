@@ -16,12 +16,6 @@ use Laravel\Sanctum\NewAccessToken;
 use MakeIT\DiscreteApi\Profile\Models\Profile;
 use MakeIT\UserRoles\HasRoles;
 
-/**
- * @property Profile|App\Models\DiscreteApi\Profile\Profile $profile
- * @property Collection|EloquentCollection $organizations
- * @method hasRole(string[] $array)
- * @method organizations()
- */
 class User extends Authenticatable // implements MustVerifyEmail
 {
     use HasApiTokens;
