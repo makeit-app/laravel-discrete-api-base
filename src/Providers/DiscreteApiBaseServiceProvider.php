@@ -1,5 +1,4 @@
 <?php
-
 /** @noinspection 1PhpFullyQualifiedNameUsageInspection, 1PhpUndefinedClassInspection, 1PhpUndefinedNamespaceInspection, 1PhpUndefinedConstantInspection */
 
 namespace MakeIT\DiscreteApi\Base\Providers;
@@ -54,9 +53,11 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configurePersonalAccessToken(): void
     {
+        $ns = DiscreteApiHelpers::compute_namespace(config('discreteapibase'));
         Sanctum::usePersonalAccessTokenModel(
-            DiscreteApiHelpers::compute_namespace(config('discreteapibase'))
-            . 'Models\\DiscreteApi\\Base\\PersonalAccessToken'
+            config('discreteapibase.route_namespace') === 'app'
+                ? $ns . 'Models\\DiscreteApi\\Base\\PersonalAccessToken'
+                : $ns . 'Models\\PersonalAccessToken'
         );
     }
 
@@ -137,9 +138,10 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     protected function configureResponseBindings(): void
     {
+        $ns = DiscreteApiHelpers::compute_namespace(config('discreteapibase'));
         $actions_namespace = config('discreteapibase.route_namespace') === 'app'
-            ? DiscreteApiHelpers::compute_namespace(config('discreteapibase')) . 'Actions\\DiscreteApi\\Base\\'
-            : DiscreteApiHelpers::compute_namespace(config('discreteapibase')) . 'Actions\\';
+            ? $ns . 'Actions\\DiscreteApi\\Base\\'
+            : $ns . 'Actions\\';
         $this->app->singleton(RegisterContract::class, $actions_namespace . 'RegisterAction');
         $this->app->singleton(AuthenticateContract::class, $actions_namespace . 'AuthenticateAction');
         $this->app->singleton(LogoutContract::class, $actions_namespace . 'LogoutAction');
