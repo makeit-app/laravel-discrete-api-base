@@ -11,7 +11,7 @@ class PasswordForgotAction extends \MakeIT\DiscreteApi\Base\Contracts\PasswordFo
 {
     public function handle(array $input): ?JsonResponse
     {
-        if (! app()->runningInConsole()) {
+        if (!app()->runningInConsole()) {
             $Validator = Validator::make($input, [
                 'email' => ['required', 'email', 'exists:users'],
             ]);

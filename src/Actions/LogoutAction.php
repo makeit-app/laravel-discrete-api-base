@@ -9,7 +9,7 @@ class LogoutAction extends \MakeIT\DiscreteApi\Base\Contracts\LogoutContract
 {
     public function handle(User $User): ?JsonResponse
     {
-        if (! app()->runningInConsole()) {
+        if (!app()->runningInConsole()) {
             $User->tokens()->delete();
 
             return response()->json(null, 204);

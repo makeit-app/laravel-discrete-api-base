@@ -12,7 +12,7 @@ class RegisterAction extends \MakeIT\DiscreteApi\Base\Contracts\RegisterContract
 {
     public function handle(array $input): ?JsonResponse
     {
-        if (! app()->runningInConsole()) {
+        if (!app()->runningInConsole()) {
             $Validator = Validator::make($input, [
                 'email' => ['required', 'email', 'string', 'max:255', 'unique:users,email'],
                 'password' => ['required', 'string', 'confirmed', (new Password(8))->letters()->mixedCase()->numbers()->symbols()->uncompromised()],

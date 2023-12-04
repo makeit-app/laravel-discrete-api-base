@@ -11,7 +11,7 @@ class AuthenticateAction extends \MakeIT\DiscreteApi\Base\Contracts\Authenticate
 {
     public function handle(array $input): ?JsonResponse
     {
-        if (! app()->runningInConsole()) {
+        if (!app()->runningInConsole()) {
             $Validator = Validator::make($input, [
                 'email' => ['required', 'email', 'exists:users'],
                 'password' => ['required', 'string'],
@@ -21,7 +21,7 @@ class AuthenticateAction extends \MakeIT\DiscreteApi\Base\Contracts\Authenticate
             }
             //
             $User = User::where('email', $input['email'])->first();
-            if (! is_null($User) && Hash::check($input['password'], $User->password)) {
+            if (!is_null($User) && Hash::check($input['password'], $User->password)) {
                 $User->tokens()->where('name', $User->email)->where('client_type', 'web')->delete();
 
                 return response()->json(['token' => $User->createToken($User->email, ['*'], 'web')->plainTextToken], 201);

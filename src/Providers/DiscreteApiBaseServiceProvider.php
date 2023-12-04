@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection 1PhpFullyQualifiedNameUsageInspection, 1PhpUndefinedClassInspection, 1PhpUndefinedNamespaceInspection, 1PhpUndefinedConstantInspection */
+
 namespace MakeIT\DiscreteApi\Base\Providers;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -53,9 +55,8 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
     protected function configurePersonalAccessToken(): void
     {
         Sanctum::usePersonalAccessTokenModel(
-            config('discreteapibase.route_namespace') === 'app'
-                ? DiscreteApiHelpers::compute_namespace(config('discreteapibase')) . 'Models\\DiscreteApi\\Base\\PersonalAccessToken'
-                : DiscreteApiHelpers::compute_namespace(config('discreteapibase')) . 'Models\\PersonalAccessToken'
+            DiscreteApiHelpers::compute_namespace(config('discreteapibase'))
+            . 'Models\\DiscreteApi\\Base\\PersonalAccessToken'
         );
     }
 

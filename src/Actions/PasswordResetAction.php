@@ -15,7 +15,7 @@ class PasswordResetAction extends \MakeIT\DiscreteApi\Base\Contracts\PasswordRes
 {
     public function handle(array $input): ?JsonResponse
     {
-        if (! app()->runningInConsole()) {
+        if (!app()->runningInConsole()) {
             $Validator = Validator::make($input, [
                 'email' => ['required', 'email', 'string', 'max:255', 'exists:users'],
                 'password' => ['required', 'string', 'confirmed', (new Password(8))->letters()->mixedCase()->numbers()->symbols()->uncompromised()],

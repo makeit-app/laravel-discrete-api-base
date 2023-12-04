@@ -11,7 +11,7 @@ class UserDeleteAction extends \MakeIT\DiscreteApi\Base\Contracts\UserDeleteCont
 {
     public function handle(User $User, array $input): ?JsonResponse
     {
-        if (! app()->runningInConsole()) {
+        if (!app()->runningInConsole()) {
             $Validator = Validator::make($input, [
                 'current_password' => ['required', 'string', new MatchCurrentPasswordRule()],
             ]);
