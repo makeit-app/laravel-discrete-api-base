@@ -8,7 +8,7 @@ Route::middleware('guest')->group(function () {
     // authenticate
     Route::middleware('throttle:6,1')->post('/auth', 'AuthenticateController');
     // password reset
-    Route::middleware('guest')->prefix('password')->group(function () {
+    Route::prefix('password')->group(function () {
         // request password reset link
         Route::put('/forgot', 'PasswordForgotController')->name('password.request');
         // reset password
