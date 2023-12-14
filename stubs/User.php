@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-//use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,15 +11,17 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
-use MakeIT\UserRoles\HasRoles;
+use MakeIT\DiscreteApi\Base\Traits\HasRoles;
+use MakeIT\DiscreteApi\Base\Traits\HasProfile;
 
-class User extends Authenticatable // implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
     use SoftDeletes;
     use HasRoles;
+    use HasProfile;
 
     public $incrementing = false;
     protected $keyType = 'string';
@@ -36,7 +38,8 @@ class User extends Authenticatable // implements MustVerifyEmail
         'created_at',
         'updated_at',
         'deleted_at',
-        'pivot'
+        'pivot',
+        'roles',
     ];
     protected $casts = [
         'email_verified_at' => 'datetime',

@@ -3,6 +3,7 @@
 namespace MakeIT\DiscreteApi\Base\Actions;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -24,6 +25,9 @@ class RegisterAction extends \MakeIT\DiscreteApi\Base\Contracts\RegisterContract
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
             ]);
+
+            event(new Registered($User));
+
             return response()->json($User->toArray());
         }
 

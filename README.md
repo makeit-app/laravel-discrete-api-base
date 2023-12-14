@@ -6,9 +6,7 @@ Inscludes: register, authenticate, logout, reset password, email verification an
 
 ## Requirements
 
-`composer require make-it-app/laravel-user-roles` - User's Role Subsystem.<br>
-Just visit the https://github.com/makeit-app/laravel-user-roles and follow installation instructions.<br>
-This package must be installed and configured manually AS ROOT PACKAGE before this one for the Laravel project, with all due care.
+- none
 
 ## Installation
 
@@ -16,12 +14,28 @@ This package must be installed and configured manually AS ROOT PACKAGE before th
 
 ## Setup
 
-- `php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="migrations"` - if you plan to modify migrations<br>
-- `php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="lang"` - if you plan modyfy localization files<br>
-- `php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="user-model" --force` - full version of `App\Models\User.php`, meaning the installed `make-it-app/laravel-user-roles` package and this installable package.<br>
+- `php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="install" --force` - overwrite User model
+- `php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="nova" --force` - full version of `App\Models\User.php`, meaning the installed `make-it-app/laravel-user-roles` package and this installable package.<br>
 
 **THEN**
 
-`php artisan makeit:discreteapi:base:install` - installer for modificable descendant classes of the package. Follow installer instructions!<br>
+`php artisan makeit:discreteapi:base:install` - installer for modificable descendant classes of the package. Follow installer instructions.<br>
 
 Then see `app/**/DiscreteApi/Base/*` filesystem structure.
+
+## Routes
+
+- POST   `api/register`             - register user (first user = super-administrator
+- POST   `api/login`                - login
+- POST   `api/logout`               - logout
+- PUT    `api/password/forgot`      - request password reset link
+- PUT    `api/password/reset`       - reset password
+- POST   `api/email/verification-notification` - request verification link
+- GET    `api/email/verify/<UUID>/<TOKEN>?expires=<UNIX_TIMESTAMP>&signature=<HASH>` - onetime verification link
+- GET    `api/user`                 - user data
+- DELETE `api/user`                 - delete myself
+- DELETE `api/user/force/<UUID>`    - delete specified user (super only)
+- PUT    `api/user/profile`         - update profile
+- GET    `api/user/profile/avatar`  - get avatar image
+- POST   `api/user/profile/avatar`  - update avatar image
+- DELETE `api/user/profile/avatar`  - remove avatar image

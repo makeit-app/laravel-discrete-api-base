@@ -2,18 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
-    // register
-    Route::middleware('throttle:12,1')->post('/register', 'RegisterController');
-    // authenticate
-    Route::middleware('throttle:6,1')->post('/auth', 'AuthenticateController');
-    // password reset
-    Route::prefix('password')->group(function () {
-        // request password reset link
-        Route::put('/forgot', 'PasswordForgotController')->name('password.request');
-        // reset password
-        Route::put('/reset', 'PasswordResetController');
-    });
+// register
+Route::middleware(['throttle:6,1'])->post('/register', 'RegisterController');
+// authenticate
+Route::middleware(['throttle:6,1'])->post('/auth', 'AuthenticateController');
+// password reset
+Route::middleware(['throttle:6,1'])->prefix('password')->group(function () {
+    // request password reset link
+    Route::put('/forgot', 'PasswordForgotController')->name('password.request');
+    // reset password
+    Route::put('/reset', 'PasswordResetController');
 });
 //
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -41,5 +39,19 @@ Route::middleware('auth:sanctum')->group(function () {
         }
         // force-delete user (initiator must be super admin!)
         Route::delete('/force/{user_id}', 'UserForceDeleteController');
+        // user profile
+        Route::prefix('/profile')->group(function () {
+            // update
+            Route::put('/', 'ProfileUpdateController');
+            // avatars
+            Route::prefix('/avatar')->group(function () {
+                // get as image
+                Route::get('/', 'ProfileAvatarController');
+                // upload new image
+                Route::post('/', 'ProfileAvatarUpdateController');
+                // remove image
+                Route::delete('/', 'ProfileAvatarDeleteController');
+            });
+        });
     });
 });

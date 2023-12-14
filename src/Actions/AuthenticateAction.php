@@ -27,7 +27,7 @@ class AuthenticateAction extends \MakeIT\DiscreteApi\Base\Contracts\Authenticate
                 return response()->json(['token' => $User->createToken($User->email, ['*'], 'web')->plainTextToken], 201);
             }
 
-            return response()->json(null, 204);
+            return response()->json(null, 404);
         }
 
         return null;
