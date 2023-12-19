@@ -11,6 +11,8 @@ use MakeIT\DiscreteApi\Base\Traits\BelongsToUser;
 class Profile extends Model
 {
     use BelongsToUser;
+    // use \MakeIT\DiscreteApi\Organizations\Traits\HasOrganization;
+    // use \MakeIT\DiscreteApi\Organizations\Traits\HasWorkspace;
 
     public $timestamps = false;
     public $incrementing = false;
