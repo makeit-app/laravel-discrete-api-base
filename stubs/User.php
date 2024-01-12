@@ -13,7 +13,8 @@ use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
 use MakeIT\DiscreteApi\Base\Models\Profile;
-use MakeIT\DiscreteApi\Organizations\Models\UserOrganizationSlot;
+// uncomment if using the DiscreteApi\Organizations package
+// use MakeIT\DiscreteApi\Organizations\Models\UserOrganizationSlot;
 
 /**
  * @property Collection organizations
@@ -32,8 +33,9 @@ class User extends Authenticatable implements MustVerifyEmail
     use SoftDeletes;
     use \MakeIT\DiscreteApi\Base\Traits\HasRoles;
     use \MakeIT\DiscreteApi\Base\Traits\HasProfile;
-    use \MakeIT\DiscreteApi\Organizations\Traits\HasUserOrganizationSlots;
-    use \MakeIT\DiscreteApi\Organizations\Traits\HasOrganizations;
+    // uncomment if using the DiscreteApi\Organizations package
+    // use \MakeIT\DiscreteApi\Organizations\Traits\HasUserOrganizationSlots;
+    // use \MakeIT\DiscreteApi\Organizations\Traits\HasOrganizations;
 
     public $incrementing = false;
     protected $keyType = 'string';
