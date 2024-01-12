@@ -23,7 +23,6 @@ use MakeIT\DiscreteApi\Base\Contracts\RegisterContract;
 use MakeIT\DiscreteApi\Base\Contracts\UserDeleteContract;
 use MakeIT\DiscreteApi\Base\Contracts\UserForceDeleteContract;
 use MakeIT\DiscreteApi\Base\Helpers\DiscreteApiHelpers;
-use MakeIT\DiscreteApi\Base\Listeners\UserAddDefaultRoleListener;
 
 class DiscreteApiBaseServiceProvider extends ServiceProvider
 {
@@ -36,7 +35,6 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $this->app->bind('role', function () {
             return new Role();
         });
-        Event::listen(Registered::class, UserAddDefaultRoleListener::class);
     }
 
     /**
