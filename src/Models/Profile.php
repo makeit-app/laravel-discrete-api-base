@@ -7,14 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use MakeIT\DiscreteApi\Base\Traits\BelongsToUser;
-use MakeIT\DiscreteApi\Organizations\Traits\HasOrganization;
-use MakeIT\DiscreteApi\Organizations\Traits\HasWorkspace;
+// uncomment only in "\App\" namespace!
+// use MakeIT\DiscreteApi\Organizations\Traits\HasOrganization;
+// use MakeIT\DiscreteApi\Organizations\Traits\HasWorkspace;
 
 class Profile extends Model
 {
     use BelongsToUser;
-    use HasOrganization;
-    use HasWorkspace;
+    // uncomment only in "\App\" namespace!
+    // use HasOrganization;
+    // use HasWorkspace;
 
     public $timestamps = false;
     public $incrementing = false;
