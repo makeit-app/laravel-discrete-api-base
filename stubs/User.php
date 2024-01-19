@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Sanctum\NewAccessToken;
 use MakeIT\DiscreteApi\Base\Models\Profile;
+
 // uncomment if using the DiscreteApi\Organizations package
 // use MakeIT\DiscreteApi\Organizations\Models\UserOrganizationSlot;
 

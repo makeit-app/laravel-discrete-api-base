@@ -44,7 +44,7 @@ return [
      */
     'observersToRegister' => [
         \App\Models\User::class                        => \MakeIT\DiscreteApi\Base\Observers\UserObserver::class,
-        \MakeIT\DiscreteApi\Base\Models\User::class    => \MakeIT\DiscreteApi\Base\Observers\RoleObserver::class,
+        \MakeIT\DiscreteApi\Base\Models\Role::class    => \MakeIT\DiscreteApi\Base\Observers\RoleObserver::class,
         \MakeIT\DiscreteApi\Base\Models\Profile::class => \MakeIT\DiscreteApi\Base\Observers\ProfileObserver::class,
     ],
     /**

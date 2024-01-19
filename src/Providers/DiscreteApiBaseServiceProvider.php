@@ -4,9 +4,7 @@
 
 namespace MakeIT\DiscreteApi\Base\Providers;
 
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;

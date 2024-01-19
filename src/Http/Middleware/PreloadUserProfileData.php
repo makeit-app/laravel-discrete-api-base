@@ -10,7 +10,7 @@ class PreloadUserProfileData
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check()) {
+        if (auth()->check() && (method_exists($request->user(), 'profile'))) {
             $request->user()->load([
                 'profile',
             ]);

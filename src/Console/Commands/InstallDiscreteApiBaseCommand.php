@@ -76,6 +76,18 @@ class InstallDiscreteApiBaseCommand extends Command
                     if (is_bool($v)) {
                         if ($v) {
                             $this->generateDescendantss();
+                            $this->info(
+                                'You need to change trait paths in Your App\Models\User Model.'
+                            );
+                            $this->newLine();
+                            $this->warning('     FROM:');
+                            $this->comment('     use \MakeIT\DiscreteApi\Base\Traits\HasRoles;');
+                            $this->comment('     use \MakeIT\DiscreteApi\Base\Traits\HasProfile;');
+                            $this->newLine();
+                            $this->warning('     TO:');
+                            $this->comment('     use \App\Traits\DiscreteApi\Base\HasRoles;');
+                            $this->comment('     use \App\Traits\DiscreteApi\Base\HasProfile;');
+                            $this->newLine();
                         }
                     }
                     $this->_config['route_namespace'] = 'app';
@@ -143,10 +155,12 @@ class InstallDiscreteApiBaseCommand extends Command
      */
     public function generate(string $type, array $generated_classes): void
     {
-        if (!empty($generated_classes['observers'])) {
+        if ($type == 'observers' && !empty($generated_classes)) {
+            $this->info('New Observers will be generated.');
             $this->_config['observersToRegister'] = [];
         }
-        if (!empty($generated_classes['policies'])) {
+        if ($type == 'policies' && !empty($generated_classes)) {
+            $this->info('New Policies will be generated.');
             $this->_config['policiesToRegister'] = [];
         }
         $printer = new PsrPrinter();

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use MakeIT\DiscreteApi\Base\Traits\BelongsToUser;
+
 // uncomment only in "\App\" namespace!
 // use MakeIT\DiscreteApi\Organizations\Traits\HasOrganization;
 // use MakeIT\DiscreteApi\Organizations\Traits\HasWorkspace;
