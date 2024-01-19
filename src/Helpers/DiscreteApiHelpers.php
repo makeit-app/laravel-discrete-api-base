@@ -200,7 +200,12 @@ class DiscreteApiHelpers
     public static function generate(Command $Command, array $class, PsrPrinter $printer, string $type = null, string $package = 'Base', array $config = []): array
     {
         $ns = new PhpNamespace($class['ns']);
-        $target = ClassType::fromCode(file_get_contents($class['package_path']));
+        try {
+            $target = ClassType::fromCode(file_get_contents($class['package_path']));
+        } catch (\Exception $e) {
+            $Command->error('Content Error:');
+            dd($class['package_path']);
+        }
         if (in_array($type, ['observers', 'policies'])) {
             $target->setName($package.$target->getName());
         }
