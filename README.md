@@ -10,7 +10,7 @@ Inscludes: register, authenticate, logout, reset password, email verification an
 
 ## Installation
 
-`composer require "make-it-app/laravel-discrete-api-base"`
+`composer require "makeit-app/laravel-discrete-api-base"`
 
 ## Setup
 
