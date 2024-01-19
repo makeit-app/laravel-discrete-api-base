@@ -76,17 +76,30 @@ class InstallDiscreteApiBaseCommand extends Command
                     if (is_bool($v)) {
                         if ($v) {
                             $this->generateDescendantss();
+                            //
+                            $this->info(
+                                'You need to add a Middleare to the Kernel'
+                            );
+                            $this->newLine();
+                            $this->warn('     \'api\' => .... // to the end of list');
+                            $this->comment('        '.(
+                                ($quiz['modify_source_code'])
+                                    ? '\App\Http\Middleware\DiscreteApi\Base\PreloadUserProfileData::class,'
+                                    : '\MakeIT\DiscreteApi\Base\Http\Middleware\PreloadUserProfileData::class,'
+                            ));
+                            $this->newLine(2);
+                            //
                             $this->info(
                                 'You need to change trait paths in Your App\Models\User Model.'
                             );
                             $this->newLine();
-                            $this->warning('     FROM:');
-                            $this->comment('     use \MakeIT\DiscreteApi\Base\Traits\HasRoles;');
-                            $this->comment('     use \MakeIT\DiscreteApi\Base\Traits\HasProfile;');
+                            $this->warn('     FROM:');
+                            $this->comment('         use \MakeIT\DiscreteApi\Base\Traits\HasRoles;');
+                            $this->comment('         use \MakeIT\DiscreteApi\Base\Traits\HasProfile;');
                             $this->newLine();
-                            $this->warning('     TO:');
-                            $this->comment('     use \App\Traits\DiscreteApi\Base\HasRoles;');
-                            $this->comment('     use \App\Traits\DiscreteApi\Base\HasProfile;');
+                            $this->warn('     TO:');
+                            $this->comment('        use \App\Traits\DiscreteApi\Base\HasRoles;');
+                            $this->comment('        use \App\Traits\DiscreteApi\Base\HasProfile;');
                             $this->newLine();
                         }
                     }
