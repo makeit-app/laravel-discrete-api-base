@@ -2,6 +2,13 @@
 
 return [
     /**
+     * Frontend settings
+     */
+    'frontend_domain' => env('APP_FRONTEND_DOMAIN'),
+    'frontend_url' => env('APP_FRONTEND_URL'),
+    'frontend_login_url' => env('APP_FRONTEND_LOGIN_URL'),
+    'frontend_dashboard_url' => env('APP_FRONTEND_DASHBOARD_URL'),
+    /**
      * Roles
      */
     'default_role' => 'user',

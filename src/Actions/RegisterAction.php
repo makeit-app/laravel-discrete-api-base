@@ -19,7 +19,7 @@ class RegisterAction extends \MakeIT\DiscreteApi\Base\Contracts\RegisterContract
                 'password' => ['required', 'string', 'confirmed', (new Password(8))->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
             ]);
             if ($Validator->fails()) {
-                return response()->json(['errors' => $Validator->errors()->toArray()], 400);
+                return response()->json(['errors' => $Validator->errors()->toArray()], 404);
             }
             $User = User::create([
                 'email' => $input['email'],

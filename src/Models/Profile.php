@@ -6,18 +6,19 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use MakeIT\DiscreteApi\Base\Traits\BelongsToUser;
-
-// uncomment only in "\App\" namespace!
-// use MakeIT\DiscreteApi\Organizations\Traits\HasOrganization;
-// use MakeIT\DiscreteApi\Organizations\Traits\HasWorkspace;
 
 class Profile extends Model
 {
-    use BelongsToUser;
-    // uncomment only in "\App\" namespace!
-    // use HasOrganization;
-    // use HasWorkspace;
+
+    use \MakeIT\DiscreteApi\Base\Traits\BelongsToUser;
+
+    // uncomment if package 'orgainzations' is installed
+    //   use \MakeIT\DiscreteApi\Organizations\Traits\HasOrganization;
+    //   use \MakeIT\DiscreteApi\Organizations\Traits\HasWorkspace;
+    // OR remove AND
+    // uncomment if package 'organizations' is installed and present in app/
+    //   use \App\Traits\DiscreteApi\Organizations\HasOrganization;
+    //   use \App\Traits\DiscreteApi\Organizations\HasWorkspace;
 
     public $timestamps = false;
     public $incrementing = false;

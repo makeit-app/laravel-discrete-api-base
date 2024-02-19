@@ -28,15 +28,29 @@ use MakeIT\DiscreteApi\Base\Models\Profile;
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
+    // PACKAGE 'BASE' TRAITS START
+    //   uncomment if package is installed in app/
+    //     use \App\Traits\DiscreteApi\Base\HasRoles;
+    //     use \App\Traits\DiscreteApi\Base\HasProfile;
+    //   remove if package is installed in app/
+    use \MakeIT\DiscreteApi\Base\Traits\HasRoles;
+    use \MakeIT\DiscreteApi\Base\Traits\HasProfile;
+    // PACKAGE 'BASE' TRAITS END
+
+    // PACKAGE 'ORGANIZATIONS' TRAITS START
+    //   uncomment if use organizations package and it is installed into app/
+    //     use \App\Traits\DiscreteApi\Organizations\HasUserOrganizationSlots;
+    //     use \App\Traits\DiscreteApi\Organizations\HasOrganizations;
+    //   uncomment if use organizations package
+    //   or remove if organizations package is installed into app/
+    //      use \MakeIT\DiscreteApi\Organizations\Traits\HasUserOrganizationSlots;
+    //      use \MakeIT\DiscreteApi\Organizations\Traits\HasOrganizations;
+    // PACKAGE 'ORGANIZATIONS' TRAITS END
+
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
     use SoftDeletes;
-    use \MakeIT\DiscreteApi\Base\Traits\HasRoles;
-    use \MakeIT\DiscreteApi\Base\Traits\HasProfile;
-    // uncomment if using the DiscreteApi\Organizations package
-    // use \MakeIT\DiscreteApi\Organizations\Traits\HasUserOrganizationSlots;
-    // use \MakeIT\DiscreteApi\Organizations\Traits\HasOrganizations;
 
     public $incrementing = false;
     protected $keyType = 'string';

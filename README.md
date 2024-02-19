@@ -14,6 +14,16 @@ Inscludes: register, authenticate, logout, reset password, email verification an
 
 ## Setup
 
+- Add records to the `.env`-file
+```ini
+APP_FRONTEND_DOMAIN=publicdomain.com
+APP_FRONTEND_URL="https://${APP_FRONTEND_DOMAIN}"
+APP_FRONTEND_LOGIN_URL="${APP_FRONTEND_URL}/login"
+APP_FRONTEND_DASHBOARD_URL="${APP_FRONTEND_URL}/dashboard"
+APP_URL="https://backend.${APP_FRONTEND_DOMAIN}"
+
+```
+
 - `php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="install" --force` - overwrite User model
 - `php artisan vendor:publish --provider="MakeIT\\DiscreteApi\\Base\\Providers\\DiscreteApiBaseServiceProvider" --tag="nova" --force` - full version of `App\Models\User.php`, meaning the installed `make-it-app/laravel-user-roles` package and this installable package.<br>
 

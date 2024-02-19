@@ -17,7 +17,7 @@ class AuthenticateAction extends \MakeIT\DiscreteApi\Base\Contracts\Authenticate
                 'password' => ['required', 'string'],
             ]);
             if ($Validator->fails()) {
-                return response()->json(['errors' => $Validator->errors()->toArray()], 400);
+                return response()->json(['errors' => $Validator->errors()->toArray()], 404);
             }
             //
             $User = User::where('email', $input['email'])->first();

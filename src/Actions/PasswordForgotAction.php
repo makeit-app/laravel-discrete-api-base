@@ -16,7 +16,7 @@ class PasswordForgotAction extends \MakeIT\DiscreteApi\Base\Contracts\PasswordFo
                 'email' => ['required', 'email', 'exists:users'],
             ]);
             if ($Validator->fails()) {
-                return response()->json(['errors' => $Validator->errors()->toArray()], 400);
+                return response()->json(['errors' => $Validator->errors()->toArray()], 404);
             }
             //
             $status = Password::sendResetLink($input, function ($user, $token) {

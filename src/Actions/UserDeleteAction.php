@@ -16,7 +16,7 @@ class UserDeleteAction extends \MakeIT\DiscreteApi\Base\Contracts\UserDeleteCont
                 'current_password' => ['required', 'string', new MatchCurrentPasswordRule()],
             ]);
             if ($Validator->fails()) {
-                return response()->json(['errors' => $Validator->errors()->toArray()], 400);
+                return response()->json(['errors' => $Validator->errors()->toArray()], 404);
             }
             $User->tokens()->delete();
             $User->delete();

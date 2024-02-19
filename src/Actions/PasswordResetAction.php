@@ -22,7 +22,7 @@ class PasswordResetAction extends \MakeIT\DiscreteApi\Base\Contracts\PasswordRes
                 'token' => 'required',
             ]);
             if ($Validator->fails()) {
-                return response()->json(['errors' => $Validator->errors()->toArray()], 400);
+                return response()->json(['errors' => $Validator->errors()->toArray()], 404);
             }
             //
             $status = PasswordBroker::reset($input, function (Authenticatable $user, string $password) {

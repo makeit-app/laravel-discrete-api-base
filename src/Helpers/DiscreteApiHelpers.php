@@ -96,15 +96,15 @@ class DiscreteApiHelpers
                     'model' => null,
                     'model_namespace' => $config['namespaces']['app'] . 'Models\\DiscreteApi\\' . $package . '\\',
                     'use' => $namespaces[$type] . '\\' . str_replace(
-                        '.php',
-                        null,
-                        basename($path)
-                    ),
+                            '.php',
+                            null,
+                            basename($path)
+                        ),
                     'as' => 'DiscreteApi' . $package . str_replace(
-                        '.php',
-                        null,
-                        basename($path)
-                    ),
+                            '.php',
+                            null,
+                            basename($path)
+                        ),
                     'ns' => preg_replace(
                         '/^\\\/',
                         null,
@@ -140,12 +140,23 @@ class DiscreteApiHelpers
                         break;
                     case 'policies':
                         unset($temp['trait']);
+                        $temp['classname'] = $package . $temp['classname'];
                         // For User Model different static conditions
+                        /** @noinspection PhpStatementHasEmptyBodyInspection */
                         if ($temp['classname'] == 'UserPolicy') {
                         } else {
                         }
-                        $temp['model'] = preg_replace('/^\\\/', null, str_replace('\\Policies\\', '\\Models\\', ($namespaces[$type] . '\\' . str_replace('Policy.php', null, basename($path)))));
+                        $temp['model'] = preg_replace(
+                            '/^\\\/',
+                            null,
+                            str_replace(
+                                '\\Policies\\',
+                                '\\Models\\',
+                                ($namespaces[$type] . '\\' . str_replace('Policy.php', null, basename($path)))
+                            )
+                        );
                         $temp['app_model'] = $config['namespaces']['app'] . 'Models\\DiscreteApi\\' . $package . '\\' . str_replace('Policy.php', null, basename($path));
+                        $temp['app_filename'] = app_path(str_replace([$namespace, '\\'], [null, '/'], $namespaces[$type]) . '/DiscreteApi/' . $package . '/' . $package . basename($path));
                         break;
                     default:
                         unset($temp['trait']);
@@ -207,10 +218,11 @@ class DiscreteApiHelpers
             dd($class['package_path']);
         }
         if (in_array($type, ['observers', 'policies'])) {
-            $target->setName($package.$target->getName());
+            $target->setName($package . $target->getName());
         }
         $target->setFinal()->setExtends($class['as']);
         if (in_array($type, ['models', 'observers', 'policies'])) {
+            /** @noinspection PhpUndefinedMethodInspection */
             $tmp_traits = $target->getTraits();
             if (!empty($tmp_traits)) {
                 $traits = [];
@@ -222,10 +234,10 @@ class DiscreteApiHelpers
                     $new_trait = [
                         'name' => $_bn,
                         'path' => str_replace(
-                            $config['namespaces']['package'],
-                            $config['namespaces']['app'],
-                            $_fn
-                        ) . '\\'
+                                $config['namespaces']['package'],
+                                $config['namespaces']['app'],
+                                $_fn
+                            ) . '\\'
                     ];
                     if (preg_match("/^\\\App/iu", $new_trait['path'])) {
                         $new_trait['path'] .= 'DiscreteApi\\' . $package . '\\';
@@ -261,11 +273,7 @@ class DiscreteApiHelpers
                 return $config;
             }
         }
-        if (in_array($type, ['observers', 'policies'])) {
-            $f = fopen($class['app_filename'], 'w');
-        } else {
-            $f = fopen($class['app_filename'], 'w');
-        }
+        $f = fopen($class['app_filename'], 'w');
         fwrite($f, "<?php\n\n" . $printer->setTypeResolving(false)->printNamespace($ns));
         fclose($f);
         $fqcn = $class['app_model'];
