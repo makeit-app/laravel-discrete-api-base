@@ -13,8 +13,8 @@ class Profile extends Model
     use \MakeIT\DiscreteApi\Base\Traits\BelongsToUser;
 
     // uncomment if package 'orgainzations' is installed
-    //   use \MakeIT\DiscreteApi\Organizations\Traits\HasOrganization;
-    //   use \MakeIT\DiscreteApi\Organizations\Traits\HasWorkspace;
+       use \MakeIT\DiscreteApi\Organizations\Traits\HasOrganization;
+       use \MakeIT\DiscreteApi\Organizations\Traits\HasWorkspace;
     // OR remove AND
     // uncomment if package 'organizations' is installed and present in app/
     //   use \App\Traits\DiscreteApi\Organizations\HasOrganization;

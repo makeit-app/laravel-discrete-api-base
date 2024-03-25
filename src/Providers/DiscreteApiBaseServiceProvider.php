@@ -4,9 +4,12 @@
 
 namespace MakeIT\DiscreteApi\Base\Providers;
 
+use Carbon\Carbon;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
 use MakeIT\DiscreteApi\Base\Console\Commands\AssignUserRoleCommand;
@@ -21,6 +24,7 @@ use MakeIT\DiscreteApi\Base\Contracts\RegisterContract;
 use MakeIT\DiscreteApi\Base\Contracts\UserDeleteContract;
 use MakeIT\DiscreteApi\Base\Contracts\UserForceDeleteContract;
 use MakeIT\DiscreteApi\Base\Helpers\DiscreteApiHelpers;
+use MakeIT\DiscreteApi\Base\Models\Role;
 
 class DiscreteApiBaseServiceProvider extends ServiceProvider
 {
@@ -42,6 +46,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->modifyVerificationEmailNotification();
         $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'discreteapibase');
         $this->loadJsonTranslationsFrom(__DIR__ . '/../../lang');
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
@@ -56,14 +61,33 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
     }
 
     /**
+     * Verification Email Customization
+     */
+    protected function modifyVerificationEmailNotification()
+    {
+        VerifyEmail::createUrlUsing(function ($notifiable) {
+            $verification_url = URL::temporarySignedRoute('verification.verify', Carbon::now()->addMinutes(config('auth.verification.expire', 60)), ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification()),]);
+            return str_replace(
+                [
+                    config('app.url'),
+                    "/api/email/verify"
+                ],
+                [
+                    config('discreteapibase.frontend_url', config('app.url')),
+                    "/auth/confirm-email"
+                ],
+                $verification_url
+            );
+        });
+    }
+
+    /**
      * Returns the appropriate PersonalAccessToken Model for the api, as computed in the computeNamespace() method
      */
     protected function configurePersonalAccessToken(): void
     {
         $ns = DiscreteApiHelpers::compute_namespace(config('discreteapibase'));
-        Sanctum::usePersonalAccessTokenModel(
-            config('discreteapibase.route_namespace') === 'app' ? $ns . 'Models\\DiscreteApi\\Base\\PersonalAccessToken' : $ns . 'Models\\PersonalAccessToken'
-        );
+        Sanctum::usePersonalAccessTokenModel(config('discreteapibase.route_namespace') === 'app' ? $ns . 'Models\\DiscreteApi\\Base\\PersonalAccessToken' : $ns . 'Models\\PersonalAccessToken');
     }
 
     /**
@@ -73,13 +97,11 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                realpath(__DIR__ . '/../../database/migrations')    => base_path('database/migrations'),
-                realpath(__DIR__ . '/../../lang')                   => lang_path('vendor/discreteapibase'),
-                realpath(__DIR__ . '/../../stubs/User.php')         => app_path('/Models/User.php'),
+                realpath(__DIR__ . '/../../database/migrations') => base_path('database/migrations'),
+                realpath(__DIR__ . '/../../lang') => lang_path('vendor/discreteapibase'),
+                realpath(__DIR__ . '/../../stubs/User.php') => app_path('/Models/User.php')
             ], 'install');
-            $this->publishes([
-                realpath(__DIR__ . '/../../stubs/NovaRoles.php')    => app_path('/Nova/NovaRoles.php'),
-            ], 'nova');
+            $this->publishes([realpath(__DIR__ . '/../../stubs/NovaRoles.php') => app_path('/Nova/NovaRoles.php'),], 'nova');
         }
     }
 
@@ -89,10 +111,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
     protected function configureCommands(): void
     {
         if (app()->runningInConsole()) {
-            $this->commands([
-                InstallDiscreteApiBaseCommand::class,
-                AssignUserRoleCommand::class,
-            ]);
+            $this->commands([InstallDiscreteApiBaseCommand::class, AssignUserRoleCommand::class,]);
         }
     }
 
@@ -105,9 +124,7 @@ class DiscreteApiBaseServiceProvider extends ServiceProvider
         $domain = $parsed['host'];
         unset($parsed);
         $ns = DiscreteApiHelpers::compute_namespace(config('discreteapibase'));
-        Route::domain($domain)->middleware(['api'])->namespace(
-            config('discreteapibase.route_namespace') === 'app' ? $ns . 'Http\\Controllers\\DiscreteApi\\Base' : $ns . 'Http\\Controllers'
-        )->prefix('api')->group(function () {
+        Route::domain($domain)->middleware(['api'])->namespace(config('discreteapibase.route_namespace') === 'app' ? $ns . 'Http\\Controllers\\DiscreteApi\\Base' : $ns . 'Http\\Controllers')->prefix('api')->group(function () {
             $this->loadRoutesFrom(__DIR__ . '/../routes.php');
         });
     }

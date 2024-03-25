@@ -53,5 +53,9 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::delete('/', 'ProfileAvatarDeleteController');
             });
         });
+        // notifications
+        Route::prefix('notifications')->group(function () {
+            Route::get('/', 'NotificationsController');
+        });
     });
 });

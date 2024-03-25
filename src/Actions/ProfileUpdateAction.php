@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Validator;
 
-class ProfileUpdateAction extends \MakeIT\DiscreteApi\Base\Contracts\ProfileUpdareContract
+class ProfileUpdateAction extends \MakeIT\DiscreteApi\Base\Contracts\ProfileUpdateContract
 {
     public function handle(User $User, array $input): ?JsonResponse
     {
